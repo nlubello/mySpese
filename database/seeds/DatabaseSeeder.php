@@ -11,6 +11,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+      App\Models\Category::create(['name' => 'Casa', 'icon' => 'fa-home', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Auto', 'icon' => 'fa-car', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Ristoranti', 'icon' => 'fa-cutlery', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Bar', 'icon' => 'fa-glass', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Utenze', 'icon' => 'fa-plug', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Spesa', 'icon' => 'fa-shopping-cart', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Salute', 'icon' => 'fa-medkit', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Regali', 'icon' => 'fa-gift', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Relazioni', 'icon' => 'fa-heart-o', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Altro', 'icon' => 'fa-star-o', 'type' => 0]);
+
+      \Backpack\Base\app\Models\BackpackUser::create(['name' => 'Admin', 'email'=> 'admin@admin.com', 'password' => '123456']);
     }
 }

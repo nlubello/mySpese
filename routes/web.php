@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
+  Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+
   CRUD::resource('expense', 'ExpenseCrudController');
   CRUD::resource('category', 'CategoryCrudController');
 });

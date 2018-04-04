@@ -20,7 +20,7 @@ class ExpenseCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Expense');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/expense');
-        $this->crud->setEntityNameStrings('expense', 'expenses');
+        $this->crud->setEntityNameStrings('Movimento', 'Movimentazioni');
 
         /*
         |--------------------------------------------------------------------------
@@ -51,6 +51,28 @@ class ExpenseCrudController extends CrudController
              //'class' => 'form-group col-md-12'
             //], // extra HTML attributes for the field wrapper - mostly for resizing fields
             //'readonly'=>'readonly',
+          ],
+          [
+            'name'        => 'type', // the name of the db column
+            'label'       => 'Tipo di Movimento', // the input label
+            'type'        => 'radio',
+            'options'     => [ // the key will be stored in the db, the value will be shown as label;
+                                0 => "Spesa",
+                                1 => "Entrata"
+                            ],
+            // optional
+            'inline'      => true, // show the radios all on the same line?
+          ],
+          [   // DateTime
+            'name' => 'expensed_at',
+            'label' => 'Data del movimento',
+            'type' => 'datetime_picker',
+            // optional:
+            'datetime_picker_options' => [
+                'format' => 'DD/MM/YYYY HH:mm',
+                'language' => 'it'
+            ],
+            'allows_null' => false,
           ],
           [   // Textarea
             'name' => 'description',
@@ -83,7 +105,45 @@ class ExpenseCrudController extends CrudController
 
         // ------ CRUD COLUMNS
         // $this->crud->addColumn(); // add a single column, at the end of the stack
-        // $this->crud->addColumns(); // add multiple columns, at the end of the stack
+        $array_of_arrays = [
+          [
+             'name' => 'name', // The db column name
+             'label' => "Nome spesa", // Table column heading
+             // 'prefix' => "Name: ",
+             // 'suffix' => "(user)",
+             // 'limit' => 120, // character limit; default is 80;
+          ],
+          [
+             'name' => 'amount', // The db column name
+             'label' => "Importo", // Table column heading
+             'type' => 'number',
+             'prefix' => "€",
+             // 'suffix' => " EUR",
+             'decimals' => 2,
+          ],
+          [
+             'name' => "expensed_at", // The db column name
+             'label' => "Data", // Table column heading
+             'type' => "datetime"
+          ],
+          [
+             // n-n relationship (with pivot table)
+             'label' => "Categorie", // Table column heading
+             'type' => "select_multiple",
+             'name' => 'categories', // the method that defines the relationship in your Model
+             'entity' => 'categories', // the method that defines the relationship in your Model
+             'attribute' => "name", // foreign key attribute that is shown to user
+             'model' => "App\Models\Category", // foreign key model
+          ],
+          [
+             // run a function on the CRUD model and show its return value
+             'name' => "type",
+             'label' => "Tipo", // Table column heading
+             'type' => "model_function",
+             'function_name' => 'htmlType', // the method in your Model
+          ],
+        ];
+        $this->crud->addColumns($array_of_arrays); // add multiple columns, at the end of the stack
         // $this->crud->removeColumn('column_name'); // remove a column from the stack
         // $this->crud->removeColumns(['column_name_1', 'column_name_2']); // remove an array of columns from the stack
         // $this->crud->setColumnDetails('column_name', ['attribute' => 'value']); // adjusts the properties of the passed in column (by name)

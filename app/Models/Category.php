@@ -19,7 +19,7 @@ class Category extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = [];
+    protected $fillable = ['name', 'icon', 'type'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -30,6 +30,11 @@ class Category extends Model
     */
     public function htmlIcon(){
       return '<i class="fa '.$this->icon.'" aria-hidden="true"></i>';
+    }
+
+    public function getSum(){
+      return $this->expenses()->where('type', 1)->sum('amount') -
+        $this->expenses()->where('type', 0)->sum('amount');
     }
 
     /*
