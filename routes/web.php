@@ -21,4 +21,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
 
   CRUD::resource('expense', 'ExpenseCrudController');
   CRUD::resource('category', 'CategoryCrudController');
+  CRUD::resource('periodic', 'PeriodicCrudController');
 });

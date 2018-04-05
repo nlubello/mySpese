@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 use Carbon\Carbon;
 
-class Expense extends Model
+class Periodic extends Model
 {
     use CrudTrait;
 
@@ -16,13 +16,13 @@ class Expense extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'expenses';
+    protected $table = 'periodics';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     protected $fillable = [];
     // protected $hidden = [];
-    protected $dates = ['expensed_at'];
+    protected $dates = ['ending_at', 'starting_at'];
 
     /*
     |--------------------------------------------------------------------------
@@ -45,73 +45,38 @@ class Expense extends Model
       return $txt;
     }
 
-    public static function montlyExpenses($date){
+    public function htmlPeriod(){
+      $txt = "";
+      switch ($this->period){
+        case 'm':
+          $txt = '<span class="label label-warning">Mensile</span>';
+          break;
+        case 'g':
+          $txt = '<span class="label label-warning">Giornaliero</span>';
+          break;
+        case 'y':
+          $txt = '<span class="label label-warning">Annuale</span>';
+          break;
+        case '4m':
+          $txt = '<span class="label label-warning">4 Mesi</span>';
+          break;
 
-      return Expense::whereMonth('expensed_at', $date->month)
-        ->whereYear('expensed_at', $date->year)
-        ->where('type', 0)
-        ->sum('amount');
-
-    }
-
-    public static function montlyGain($date){
-
-      return Expense::whereMonth('expensed_at', $date->month)
-        ->whereYear('expensed_at', $date->year)
-        ->where('type', 1)
-        ->sum('amount');
-
-    }
-
-    public static function montlyStat(){
-
-      $now = Carbon::now();
-
-      $stat = array();
-      for($i=0; $i<=30; $i++){
-        $tmp = array();
-
-        //$tmp['y'] = $now->format(config('backpack.base.default_date_format'));
-        $tmp['y'] = $now->toDateString();
-        $tmp['in'] = Expense::whereDate('expensed_at', $now->toDateString())
-          ->where('type', 1)
-          ->sum('amount');
-        $tmp['out'] = Expense::whereDate('expensed_at', $now->toDateString())
-          ->where('type', 0)
-          ->sum('amount');
-        $stat[] = $tmp;
-
-        $now->subDay();
       }
 
-      return $stat;
-
+      return $txt;
     }
 
-    public static function yearlyStat(){
-
-      $now = Carbon::now();
-
-      $stat = array();
-      for($i=0; $i<=12; $i++){
-        $tmp = array();
-        $start = (clone $now)->firstOfMonth()->toDateString();
-        $end = (clone $now)->lastOfMonth()->toDateString();
-
-        $tmp['y'] = $now->toDateString();
-        $tmp['in'] = Expense::whereBetween('expensed_at', [$start, $end])
-          ->where('type', 1)
-          ->sum('amount');
-        $tmp['out'] = Expense::whereBetween('expensed_at', [$start, $end])
-          ->where('type', 0)
-          ->sum('amount');
-        $stat[] = $tmp;
-
-        $now->subMonth();
+    private function nextDate($inDate){
+      switch ($this->period){
+        case 'm':
+          return $inDate->addMonth();
+        case 'g':
+          return $inDate->addDay();
+        case 'y':
+          return $inDate->addYear();
+        case '4m':
+          return $inDate->addMonths(4);
       }
-
-      return $stat;
-
     }
 
     /*
@@ -139,6 +104,25 @@ class Expense extends Model
     | ACCESORS
     |--------------------------------------------------------------------------
     */
+
+    /*public function getDatePeriodsAttribute()
+    {
+      return "{$this->first_name} {$this->last_name}";
+    }*/
+
+    public function getNextPeriodAttribute()
+    {
+      $now = Carbon::now()->startOfDay();
+      $tmpD = clone $this->starting_at->startOfDay();
+
+      while ($tmpD->lt($now)){
+
+        $tmpD = $this->nextDate($tmpD);
+
+      }
+
+      return $tmpD;
+    }
 
     /*
     |--------------------------------------------------------------------------

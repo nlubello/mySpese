@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
 use App\Models\Category;
+use App\Models\Periodic;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
@@ -19,9 +20,9 @@ class DashboardController extends Controller
       $data = array();
 
       $now = Carbon::now();
-      $data['in'] = Expense::montlyExpenses($now);
-      $data['out'] = Expense::montlyGain($now);
-      $data['bal'] = Expense::montlyBalance($now);
+      $data['out'] = Expense::montlyExpenses($now);
+      $data['in'] = Expense::montlyGain($now);
+      $data['bal'] = $data['in'] - $data['out'];
 
       $data['mov'] = Expense::orderBy('expensed_at', 'desc')->take(10)->get();
 
@@ -31,6 +32,16 @@ class DashboardController extends Controller
       }
       $data['catin'] = $tmp->where('sum', '<', 0)->sortBy('sum')->take(5);
       $data['catout'] = $tmp->where('sum', '>', 0)->sortByDesc('sum')->take(5);
+
+      $data['stat30'] = Expense::montlyStat();
+      $data['statYr'] = Expense::yearlyStat();
+
+      $end = (clone $now)->subDays(30);
+      $periods = Periodic::whereNull('ending_at')
+        ->orWhere('ending_at', '>', $now->toDateString())->get();
+      $data['periodics'] = $periods->sortBy('next_period')->take(10);
+
+      \Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
 
       return view('dashboard', $data);
     }

@@ -51,6 +51,14 @@ class Category extends Model
         return $this->belongsToMany('App\Models\Expense');
     }
 
+    /**
+     * The roles that belong to the user.
+     */
+    public function periodics()
+    {
+        return $this->belongsToMany('App\Models\Periodic');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
