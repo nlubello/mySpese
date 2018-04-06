@@ -124,6 +124,40 @@ class Periodic extends Model
       return $tmpD;
     }
 
+
+    public function getYearlyBalanceAttribute(){
+
+      switch ($this->type){
+        case 0:
+          $tmpAmount = -1 * $this->amount;
+          break;
+        case 1:
+          $tmpAmount = $this->amount;
+          break;
+
+      }
+
+      if (!is_null($this->ending_at)){
+        // Finished periodic?
+        $now = Carbon::now();
+        $tmpD = clone $this->ending_at;
+
+        if($tmpD->lt($now))
+          $tmpAmount = 0;
+      }
+
+      switch ($this->period){
+        case 'm':
+          return $tmpAmount * 12;
+        case 'g':
+          return $tmpAmount * 365;
+        case 'y':
+          return $tmpAmount;
+        case '4m':
+          return $tmpAmount * 3;
+      }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

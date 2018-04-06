@@ -43,6 +43,8 @@ class DashboardController extends Controller
 
       \Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
 
+      $data['rem'] = round($periods->sum('yearly-balance') / 12.0 - $data['out'], 2);
+
       return view('dashboard', $data);
     }
 
