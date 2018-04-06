@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
                               pdo \
     # has deps
     && docker-php-ext-install mcrypt \
-                              pdo_mysql \
+                              pdo_mysql
 
 RUN chown -R www-data:www-data /srv/app \
     && a2enmod rewrite
