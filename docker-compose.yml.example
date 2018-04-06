@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    image: laravel-docker
+
+    environment:
+      - VIRTUAL_HOST=**YOUR FQDN **
+      - VIRTUAL_NETWORK=nginx-proxy
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=**YOUR FQDN **
+      - LETSENCRYPT_EMAIL=**YOUR EMAIL **
+    depends_on:
+      - mariadb
