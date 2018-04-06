@@ -56,7 +56,7 @@
           <div class="icon">
             <i class="ion ion-cash"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="#line-30" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -98,7 +98,7 @@
           </div>
         </div>
 
-        <div class="col-md-4 col-xs-6">
+        <div class="col-md-4 col-xs-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title">5 principali categorie di spesa</div>
@@ -151,7 +151,7 @@
             </div>
         </div>
 
-        <div class="col-md-4 col-xs-6">
+        <div class="col-md-4 col-xs-12">
             <div class="box box-default">
               <div class="box-header with-border">
                   <div class="box-title">Le prossime entrate e uscite</div>
