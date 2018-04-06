@@ -1,6 +1,6 @@
 FROM php:7.2-apache
 
-MAINTAINER Paul Redmond
+MAINTAINER Niccolò Lubello
 
 COPY . /srv/app
 COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
@@ -9,6 +9,29 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git zip
 
 RUN curl --silent --show-error https://getcomposer.org/installer | php
+
+# Install laravel system requirements
+RUN apt-get update && apt-get install -y \
+        libmcrypt-dev \
+        # deps for pdo_mysql
+        mysql-client \
+        # deps of pdo_pgsql
+        libpq-dev \
+        postgresql-client \
+        # deps of pdo_sqlite
+        libsqlite3-dev \
+        # deps for mongodb driver
+        libssl-dev \
+    # no deps
+    && docker-php-ext-install tokenizer \
+                              mbstring \
+                              pdo \
+    # has deps
+    && docker-php-ext-install mcrypt \
+                              pdo_mysql \
+                              pdo_pgsql \
+                              pdo_sqlite \
+    && docker-php-pecl-install mongodb
 
 RUN chown -R www-data:www-data /srv/app \
     && a2enmod rewrite
