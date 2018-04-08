@@ -26,6 +26,9 @@ class DatabaseSeeder extends Seeder
       App\Models\Category::create(['name' => 'Resi', 'icon' => 'fa-building-o', 'type' => 1]);
       App\Models\Category::create(['name' => 'Fatture', 'icon' => 'fa-paper-plane', 'type' => 1]);
 
+      \Backpack\Base\app\Models\BackpackUser::create(['name' => 'Demo', 'email'=> 'demo@nlubello.eu', 'password' => bcrypt('1234')]);
       \Backpack\Base\app\Models\BackpackUser::create(['name' => 'Admin', 'email'=> 'admin@admin.com', 'password' => bcrypt('123456')]);
+
+      
     }
 }

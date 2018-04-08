@@ -14,9 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::redirect('/admin', url('/'), 301);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
+
   Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
   CRUD::resource('expense', 'ExpenseCrudController');
