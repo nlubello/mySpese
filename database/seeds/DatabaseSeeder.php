@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
       App\Models\Category::create(['name' => 'Salute', 'icon' => 'fa-medkit', 'type' => 0]);
       App\Models\Category::create(['name' => 'Regali', 'icon' => 'fa-gift', 'type' => 0]);
       App\Models\Category::create(['name' => 'Relazioni', 'icon' => 'fa-heart-o', 'type' => 0]);
+      App\Models\Category::create(['name' => 'Animali', 'icon' => 'fa-heart-o', 'type' => 0]);
       App\Models\Category::create(['name' => 'Altro', 'icon' => 'fa-star-o', 'type' => 0]);
       App\Models\Category::create(['name' => 'Stipendio', 'icon' => 'fa-money', 'type' => 1]);
       App\Models\Category::create(['name' => 'Resi', 'icon' => 'fa-building-o', 'type' => 1]);

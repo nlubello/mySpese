@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\ExpenseRequest as StoreRequest;
-use App\Http\Requests\ExpenseRequest as UpdateRequest;
+use App\Http\Requests\DebitRequest as StoreRequest;
+use App\Http\Requests\DebitRequest as UpdateRequest;
 
-class ExpenseCrudController extends CrudController
+class DebitCrudController extends CrudController
 {
     public function setup()
     {
@@ -18,9 +18,9 @@ class ExpenseCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('App\Models\Expense');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/expense');
-        $this->crud->setEntityNameStrings('Movimento', 'Movimentazioni');
+        $this->crud->setModel('App\Models\Debit');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/debit');
+        $this->crud->setEntityNameStrings('Debito o Credito', 'Debiti e Crediti');
 
         /*
         |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class ExpenseCrudController extends CrudController
         $array_of_arrays = [
           [ // Text
             'name' => 'name',
-            'label' => "Nome spesa",
+            'label' => "Nome debito o credito",
             'type' => 'text',
 
             // optional
@@ -57,52 +57,27 @@ class ExpenseCrudController extends CrudController
             'type' => 'hidden',
             'default' => \Auth::user()->id,
           ],
-          [
-            'name'        => 'type', // the name of the db column
-            'label'       => 'Tipo di Movimento', // the input label
-            'type'        => 'radio',
-            'options'     => [ // the key will be stored in the db, the value will be shown as label;
-                                0 => "Spesa",
-                                1 => "Entrata"
-                            ],
-            // optional
-            'inline'      => true, // show the radios all on the same line?
-          ],
-          [   // DateTime
-            'name' => 'expensed_at',
-            'label' => 'Data del movimento',
-            'type' => 'datetime_picker',
+          [   // Date
+            'name' => 'due_at',
+            'label' => 'Data di scadenza',
+            'type' => 'date_picker',
             // optional:
             'datetime_picker_options' => [
-                'format' => 'DD/MM/YYYY HH:mm',
+                'format' => 'DD/MM/YYYY',
                 'language' => 'it'
             ],
             'allows_null' => false,
-          ],
-          [   // Textarea
-            'name' => 'description',
-            'label' => 'Descrizione estesa',
-            'type' => 'textarea'
           ],
           [   // Number
             'name' => 'amount',
             'label' => 'Importo',
             'type' => 'number',
             // optionals
+            'hint' => 'Inserire un valore negativo per un debito e positivo per un credito',
             'attributes' => ["step" => "any"], // allow decimals
             'prefix' => "€",
             // 'suffix' => ".00",
           ],
-          [       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Categorie",
-            'type' => 'select2_multiple',
-            'name' => 'categories', // the method that defines the relationship in your Model
-            'entity' => 'categories', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\Category", // foreign key model
-            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
-            // 'select_all' => true, // show Select All and Clear buttons?
-          ]
         ];
         $this->crud->addFields($array_of_arrays, 'update/create/both');
         // $this->crud->removeField('name', 'update/create/both');
@@ -113,7 +88,7 @@ class ExpenseCrudController extends CrudController
         $array_of_arrays = [
           [
              'name' => 'name', // The db column name
-             'label' => "Nome spesa", // Table column heading
+             'label' => "Nome debito o credito", // Table column heading
              // 'prefix' => "Name: ",
              // 'suffix' => "(user)",
              // 'limit' => 120, // character limit; default is 80;
@@ -127,25 +102,9 @@ class ExpenseCrudController extends CrudController
              'decimals' => 2,
           ],
           [
-             'name' => "expensed_at", // The db column name
-             'label' => "Data", // Table column heading
-             'type' => "datetime"
-          ],
-          [
-             // n-n relationship (with pivot table)
-             'label' => "Categorie", // Table column heading
-             'type' => "select_multiple",
-             'name' => 'categories', // the method that defines the relationship in your Model
-             'entity' => 'categories', // the method that defines the relationship in your Model
-             'attribute' => "name", // foreign key attribute that is shown to user
-             'model' => "App\Models\Category", // foreign key model
-          ],
-          [
-             // run a function on the CRUD model and show its return value
-             'name' => "type",
-             'label' => "Tipo", // Table column heading
-             'type' => "model_function",
-             'function_name' => 'htmlType', // the method in your Model
+             'name' => "due_at", // The db column name
+             'label' => "Scadenza", // Table column heading
+             'type' => "date"
           ],
         ];
         $this->crud->addColumns($array_of_arrays); // add multiple columns, at the end of the stack
