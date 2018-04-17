@@ -8,18 +8,19 @@ use App\Models\Expense;
 use App\Models\Category;
 use App\Models\Periodic;
 use Carbon\Carbon;
-
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     //
 
-    public function index()
+    public function index(Request $request)
     {
       $data = array();
 
-      $now = Carbon::now();
+      $now = Carbon::parse($request->input('date', Carbon::now()->toDateString()));
+
+      $data['now'] = $now;
       $data['out'] = Expense::montlyExpenses($now);
       $data['in'] = Expense::montlyGain($now);
       $data['bal'] = $data['in'] - $data['out'];

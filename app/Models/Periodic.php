@@ -93,6 +93,11 @@ class Periodic extends Model
         return $this->belongsToMany('App\Models\Category');
     }
 
+    public function expenses()
+    {
+        return $this->hasMany('App\Models\Expense');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

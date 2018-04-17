@@ -14,6 +14,70 @@
 
 
 @section('content')
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      <nav aria-label="Month pagination">
+        @php
+        setlocale(LC_TIME, 'Italian');
+        $dC = Carbon\Carbon::parse($now);
+        @endphp
+
+        <ul class="pagination">
+          @php
+            $d = (clone $dC)->subYear();
+            $dTxt = $d->formatLocalized('%b %Y');
+            $dUrl = $d->startOfMonth()->toDateString();
+          @endphp
+          <li class="page-item"><a class="page-link"
+            href="{{ backpack_url('dashboard') . '?date=' . $dUrl }}">
+            &laquo; {{ $dTxt }}
+          </a></li>
+
+          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+
+          @for ($i = 2; $i > 0; $i--)
+            @php
+              $d = (clone $dC)->subMonths($i);
+              $dTxt = $d->formatLocalized('%b %Y');
+              $dUrl = $d->startOfMonth()->toDateString();
+            @endphp
+              <li class="page-item"><a class="page-link" href="{{backpack_url('dashboard') . '?date=' . $dUrl}}">
+                {{ $dTxt }}
+              </a></li>
+          @endfor
+
+          <li class="page-item active"><a class="page-link" href="#">
+            {{ $now->formatLocalized('%b %Y') }}
+          </a></li>
+
+          @for ($i = 1; $i < 3; $i++)
+            @php
+              $d = (clone $dC)->addMonths($i);
+              $dTxt = $d->formatLocalized('%b %Y');
+              $dUrl = $d->startOfMonth()->toDateString();
+            @endphp
+              <li class="page-item"><a class="page-link" href="{{backpack_url('dashboard') . '?date=' . $dUrl}}">
+                {{ $dTxt }}
+              </a></li>
+          @endfor
+
+          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+
+          @php
+            $d = (clone $dC)->addYear();
+            $dTxt = $d->formatLocalized('%b %Y');
+            $dUrl = $d->startOfMonth()->toDateString();
+          @endphp
+          <li class="page-item"><a class="page-link"
+            href="{{ backpack_url('dashboard') . '?date=' . $dUrl }}">
+            &laquo; {{ $dTxt }}
+          </a></li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
     <div class="row">
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
@@ -21,7 +85,7 @@
           <div class="inner">
             <h3>{{$out}}<sup style="font-size: 20px">&euro;</sup></h3>
 
-            <p>Spesi questo mese</p>
+            <p>Spese extra questo mese</p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -36,7 +100,7 @@
           <div class="inner">
             <h3>{{$in}}<sup style="font-size: 20px">&euro;</sup></h3>
 
-            <p>Guadagni del mese</p>
+            <p>Guadagni extra del mese</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
@@ -66,7 +130,7 @@
           <div class="inner">
             <h3>{{$rem}}<sup style="font-size: 20px">&euro;</sup></h3>
 
-            <p>Rimanenti questo mese</p>
+            <p>Budget questo mese</p>
           </div>
           <div class="icon">
             <i class="ion ion-arrow-graph-up-right"></i>

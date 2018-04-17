@@ -47,6 +47,7 @@ class Kernel extends ConsoleKernel
               $e->type = $p->type;
               $e->expensed_at = $now->toDateTimeString();
               $e->amount = $p->amount;
+              $e->periodic_id = $p->id;
               $e->save();
 
               echo json_encode($p->categories);

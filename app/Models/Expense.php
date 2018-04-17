@@ -47,9 +47,12 @@ class Expense extends Model
 
     public static function montlyExpenses($date){
 
+      \Debugbar::info($date);
+
       return Expense::whereMonth('expensed_at', $date->month)
         ->whereYear('expensed_at', $date->year)
         ->where('type', 0)
+        ->whereNull('periodic_id')
         ->sum('amount');
 
     }
@@ -59,6 +62,7 @@ class Expense extends Model
       return Expense::whereMonth('expensed_at', $date->month)
         ->whereYear('expensed_at', $date->year)
         ->where('type', 1)
+        ->whereNull('periodic_id')
         ->sum('amount');
 
     }
@@ -126,6 +130,11 @@ class Expense extends Model
     public function categories()
     {
         return $this->belongsToMany('App\Models\Category');
+    }
+
+    public function periodic()
+    {
+      return $this->belongsTo('App\Models\Periodic');
     }
 
     /*
