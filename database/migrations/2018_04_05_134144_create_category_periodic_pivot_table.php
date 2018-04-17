@@ -14,9 +14,9 @@ class CreateCategoryPeriodicPivotTable extends Migration
     {
         Schema::create('category_periodic', function (Blueprint $table) {
             $table->integer('category_id')->unsigned()->index();
-            $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->integer('periodic_id')->unsigned()->index();
-            $table->foreign('periodic_id')->references('id')->on('periodic')->onDelete('cascade');
+            $table->foreign('periodic_id')->references('id')->on('periodics')->onDelete('cascade');
             $table->primary(['category_id', 'periodic_id']);
         });
     }

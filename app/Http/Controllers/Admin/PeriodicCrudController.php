@@ -52,6 +52,11 @@ class PeriodicCrudController extends CrudController
             //], // extra HTML attributes for the field wrapper - mostly for resizing fields
             //'readonly'=>'readonly',
           ],
+          [   // Hidden
+            'name' => 'user_id',
+            'type' => 'hidden',
+            'default' => \Auth::user()->id,
+          ],
           [
             'name'        => 'type', // the name of the db column
             'label'       => 'Tipo di Movimento', // the input label

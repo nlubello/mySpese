@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Debit extends Model
 {
     use CrudTrait;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -16,49 +18,25 @@ class Category extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'categories';
+    protected $table = 'debits';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'icon', 'type'];
+    protected $fillable = [];
     // protected $hidden = [];
-    // protected $dates = [];
+    protected $dates = ['deleted_at', 'due_at'];
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function htmlIcon(){
-      return '<i class="fa '.$this->icon.'" aria-hidden="true"></i>';
-    }
-
-    public function getSum(){
-      return $this->expenses()->where('type', 1)->sum('amount') -
-        $this->expenses()->where('type', 0)->sum('amount');
-    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    /**
-     * The roles that belong to the user.
-     */
-    public function expenses()
-    {
-        return $this->belongsToMany('App\Models\Expense');
-    }
-
-    /**
-     * The roles that belong to the user.
-     */
-    public function periodics()
-    {
-        return $this->belongsToMany('App\Models\Periodic');
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -80,8 +58,7 @@ class Category extends Model
             // The user is logged in...
             $user = \Auth::user();
 
-            $builder->whereNull('user_id')->orWhere('user_id', $user->id);
-            //$builder->Where('user_id', $user->id);
+            $builder->where('user_id', $user->id);
           }
 
         });

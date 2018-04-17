@@ -52,6 +52,11 @@ class CategoryCrudController extends CrudController
              //], // extra HTML attributes for the field wrapper - mostly for resizing fields
              //'readonly'=>'readonly',
           ],
+          [   // Hidden
+            'name' => 'user_id',
+            'type' => 'hidden',
+            'default' => \Auth::user()->id,
+          ],
           [
             'label' => "Icona",
             'name' => 'icon',

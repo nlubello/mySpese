@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class Expense extends Model
 {
@@ -142,6 +143,26 @@ class Expense extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('user_id', function (Builder $builder) {
+          if (\Auth::check()) {
+            // The user is logged in...
+            $user = \Auth::user();
+
+            $builder->where('user_id', $user->id);
+          }
+
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------

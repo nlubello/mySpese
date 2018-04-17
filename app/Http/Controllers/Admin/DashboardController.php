@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Expense;
 use App\Models\Category;
 use App\Models\Periodic;
+use App\Models\Debit;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -42,9 +43,11 @@ class DashboardController extends Controller
         ->orWhere('ending_at', '>', $now->toDateString())->get();
       $data['periodics'] = $periods->sortBy('next_period')->take(10);
 
-      \Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
+      //\Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
 
-      $data['rem'] = round($periods->sum('yearly-balance') / 12.0 - $data['out'], 2);
+      $data['rem'] = round($periods->sum('yearly-balance') / 12.0);
+
+      $data['debits'] = Debit::take(10)->get();
 
       return view('dashboard', $data);
     }

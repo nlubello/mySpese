@@ -260,6 +260,37 @@
               </table>
             </div>
           </div>
+
+          <div class="box box-danger">
+            <div class="box-header with-border">
+                <div class="box-title">I debiti o crediti attivi</div>
+            </div>
+
+            <div class="box-body no-padding">
+              <table class="table">
+                <tbody>
+                <tr>
+                  <th>Nome</th>
+                  <th>Scadenza</th>
+                  <th style="width: 50px">Importo</th>
+                </tr>
+                @foreach($debits as $d)
+                <tr>
+                  <td>{{$d->name}}</td>
+                  <td>{{Date::parse($d->due_at)->format(config('backpack.base.default_date_format'))}}</td>
+                  <td>
+                    @if($d->amount < 0)
+                    <span class="badge bg-red">
+                    @else
+                    <span class="badge bg-green">
+                    @endif
+                    {{$d->amount}} &euro;</span></td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
         </div>
     </div>
 
