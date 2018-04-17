@@ -50,6 +50,69 @@ class Category extends Model
       return $in - $out;
     }
 
+    public function montlyStat($months = 12, $date){
+
+      //$now = Carbon::now();
+      $now = clone $date;
+
+      $stat = array();
+      for($i=0; $i<=$months; $i++){
+        $tmp = array();
+        $start = (clone $now)->firstOfMonth()->toDateString();
+        $end = (clone $now)->lastOfMonth()->toDateString();
+
+        //$tmp['y'] = $now->format(config('backpack.base.default_date_format'));
+        $tmp['y'] = $now->toDateString();
+        $tmp['in'] = $this->expenses()
+          ->whereBetween('expensed_at', [$start, $end])
+          ->where('type', 1);
+
+        $tmp['out'] = $this->expenses()
+          ->whereBetween('expensed_at', [$start, $end])
+          ->where('type', 0);
+
+        $tmp['in'] = $tmp['in']->sum('amount');
+        $tmp['out'] = $tmp['out']->sum('amount');
+        $stat[] = $tmp;
+
+        $now->subMonth();
+      }
+
+      return $stat;
+
+    }
+
+    public function yearlyStat($date){
+
+      //$now = Carbon::now();
+      $now = clone $date;
+
+      $stat = array();
+      for($i=0; $i<=6; $i++){
+        $tmp = array();
+        $start = (clone $now)->firstOfYear()->toDateString();
+        $end = (clone $now)->lastOfYear()->toDateString();
+
+        $tmp['y'] = $now->toDateString();
+        $tmp['in'] = $this->expenses()
+          ->whereBetween('expensed_at', [$start, $end])
+          ->where('type', 1);
+
+        $tmp['out'] = $this->expenses()
+          ->whereBetween('expensed_at', [$start, $end])
+          ->where('type', 0);
+
+        $tmp['in'] = $tmp['in']->sum('amount');
+        $tmp['out'] = $tmp['out']->sum('amount');
+        $stat[] = $tmp;
+
+        $now->subYear();
+      }
+
+      return $stat;
+
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

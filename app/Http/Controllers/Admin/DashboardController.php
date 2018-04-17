@@ -35,8 +35,8 @@ class DashboardController extends Controller
       $data['catin'] = $tmp->where('sum', '<', 0)->sortBy('sum')->take(5);
       $data['catout'] = $tmp->where('sum', '>', 0)->sortByDesc('sum')->take(5);
 
-      $data['stat30'] = Expense::montlyStat();
-      $data['statYr'] = Expense::yearlyStat();
+      $data['stat30'] = Expense::dailyStat(30, $now);
+      $data['statYr'] = Expense::montlyStat(12, $now);
 
       $end = (clone $now)->subDays(30);
       $periods = Periodic::whereNull('ending_at')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Carbon\Carbon;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\CategoryRequest as StoreRequest;
@@ -167,10 +168,15 @@ class CategoryCrudController extends CrudController
     }
 
     public function show($id){
+      $now = Carbon::now();
+
       $data = array();
 
       $data['crud'] = \App\Models\Category::find($id);
       \Debugbar::info($data['crud']);
+
+      $data['statM'] = $data['crud']->montlyStat(12, $now, $id);
+      $data['statY'] = $data['crud']->yearlyStat($now, $id);
 
       return view('showCat', $data);
     }
