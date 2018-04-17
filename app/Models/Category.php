@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 
 class Category extends Model
 {
@@ -33,9 +34,20 @@ class Category extends Model
       return '<i class="fa '.$this->icon.'" aria-hidden="true"></i>';
     }
 
-    public function getSum(){
-      return $this->expenses()->where('type', 1)->sum('amount') -
-        $this->expenses()->where('type', 0)->sum('amount');
+    public function getSum($date){
+      $in = $this->expenses()
+        ->whereMonth('expenses.expensed_at', $date->month)
+        ->whereYear('expenses.expensed_at', $date->year)
+        ->where('type', 1)
+        ->sum('amount');
+
+      $out = $this->expenses()
+        ->whereMonth('expenses.expensed_at', $date->month)
+        ->whereYear('expenses.expensed_at', $date->year)
+        ->where('type', 0)
+        ->sum('amount');
+
+      return $in - $out;
     }
 
     /*

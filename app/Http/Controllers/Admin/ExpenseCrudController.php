@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Carbon\Carbon;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\ExpenseRequest as StoreRequest;
@@ -57,6 +58,26 @@ class ExpenseCrudController extends CrudController
             'type' => 'hidden',
             'default' => \Auth::user()->id,
           ],
+
+          [   // Number
+            'name' => 'amount',
+            'label' => 'Importo',
+            'type' => 'number',
+            // optionals
+            'attributes' => ["step" => "any"], // allow decimals
+            'prefix' => "€",
+            // 'suffix' => ".00",
+          ],
+          [       // Select2Multiple = n-n relationship (with pivot table)
+            'label' => "Categorie",
+            'type' => 'select2_multiple',
+            'name' => 'categories', // the method that defines the relationship in your Model
+            'entity' => 'categories', // the method that defines the relationship in your Model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'model' => "App\Models\Category", // foreign key model
+            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+            // 'select_all' => true, // show Select All and Clear buttons?
+          ],
           [
             'name'        => 'type', // the name of the db column
             'label'       => 'Tipo di Movimento', // the input label
@@ -78,30 +99,20 @@ class ExpenseCrudController extends CrudController
                 'language' => 'it'
             ],
             'allows_null' => false,
+            'default' => Carbon::now()->toDateTimeString(),
           ],
           [   // Textarea
             'name' => 'description',
             'label' => 'Descrizione estesa',
             'type' => 'textarea'
           ],
-          [   // Number
-            'name' => 'amount',
-            'label' => 'Importo',
-            'type' => 'number',
-            // optionals
-            'attributes' => ["step" => "any"], // allow decimals
-            'prefix' => "€",
-            // 'suffix' => ".00",
-          ],
-          [       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Categorie",
-            'type' => 'select2_multiple',
-            'name' => 'categories', // the method that defines the relationship in your Model
-            'entity' => 'categories', // the method that defines the relationship in your Model
+          [  // Select2
+            'label' => "Ricorrenza di riferimento",
+            'type' => 'select2',
+            'name' => 'periodic_id', // the db column for the foreign key
+            'entity' => 'periodic', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\Category", // foreign key model
-            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
-            // 'select_all' => true, // show Select All and Clear buttons?
+            'model' => "App\Models\Periodic" // foreign key model
           ]
         ];
         $this->crud->addFields($array_of_arrays, 'update/create/both');

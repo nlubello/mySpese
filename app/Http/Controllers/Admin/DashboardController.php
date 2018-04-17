@@ -30,7 +30,7 @@ class DashboardController extends Controller
 
       $tmp = Category::all();
       foreach ($tmp as &$k) {
-        $k['sum'] = $k->getSum();
+        $k['sum'] = $k->getSum($now);
       }
       $data['catin'] = $tmp->where('sum', '<', 0)->sortBy('sum')->take(5);
       $data['catout'] = $tmp->where('sum', '>', 0)->sortByDesc('sum')->take(5);

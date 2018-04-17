@@ -158,7 +158,7 @@
                     <th style="width: 50px">Importo</th>
                   </tr>
                   @foreach($mov as $m)
-                  <tr>
+                  <tr class="clickable" data-href="{{backpack_url('expense') . '/' . $m->id . '/edit' }}">
                     <td>{{$m->name}}</td>
                     <td>{{Date::parse($m->expensed_at)->format(config('backpack.base.default_date_format'))}}</td>
                     <td>
@@ -191,7 +191,7 @@
                       <th style="width: 80px">Importo</th>
                     </tr>
                     @foreach($catin as $c)
-                    <tr>
+                    <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
                       <td>{!!$c->htmlIcon()!!}</td>
                       <td>{{$c->name}}</td>
                       <td><span class="badge bg-red">
@@ -216,7 +216,7 @@
                       <th style="width: 80px">Importo</th>
                     </tr>
                     @foreach($catout as $c)
-                    <tr>
+                    <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
                       <td>{!!$c->htmlIcon()!!}</td>
                       <td>{{$c->name}}</td>
                       <td><span class="badge bg-green">
@@ -318,6 +318,14 @@
 
 @section('after_styles')
 <link rel="stylesheet" href="{{ asset('vendor/adminlte/') }}/bower_components/morris.js/morris.css">
+
+<style>
+tr.clickable:hover{
+  cursor: pointer;
+  background-color: #ccc;
+}
+</style>
+
 @endsection
 
 @section('after_scripts')
@@ -345,6 +353,10 @@ $( document ).ready(function() {
     xLabels: 'month',
     lineColors: ['#5cb85c', '#d9534f']
     });
+
+  $(".clickable").click(function(){
+    window.location = $(this).data("href");
+  });
 });
 </script>
 

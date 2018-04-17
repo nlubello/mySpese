@@ -165,4 +165,13 @@ class CategoryCrudController extends CrudController
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
     }
+
+    public function show($id){
+      $data = array();
+
+      $data['crud'] = \App\Models\Category::find($id);
+      \Debugbar::info($data['crud']);
+
+      return view('showCat', $data);
+    }
 }

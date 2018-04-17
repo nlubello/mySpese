@@ -48,8 +48,6 @@ class Expense extends Model
 
     public static function montlyExpenses($date){
 
-      \Debugbar::info($date);
-
       return Expense::whereMonth('expensed_at', $date->month)
         ->whereYear('expensed_at', $date->year)
         ->where('type', 0)
