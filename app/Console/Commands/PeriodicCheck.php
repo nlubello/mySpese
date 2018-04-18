@@ -39,7 +39,8 @@ class PeriodicCheck extends Command
     public function handle()
     {
       $now = Carbon::now();
-      $this->info("Inizio lettura dei periodici - $now->toDateString");
+      $time =  $now->toDateString();
+      $this->info("Inizio lettura dei periodici - $time");
 
 
       $per = \App\Models\Periodic::whereNull('ending_at')
@@ -71,7 +72,7 @@ class PeriodicCheck extends Command
           // Skip
         }
       }
-      $this->info("Fine lettura dei periodici - $now->toDateString");
+      $this->info("Fine lettura dei periodici - $time");
     }
 
 }
