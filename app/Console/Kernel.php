@@ -29,39 +29,10 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         // Controllo le scadenze attive
-        $schedule->call(function () {
-          echo "Inizio lettura dei periodici!\n";
-
-          $now = Carbon::now();
-          $per = \App\Models\Periodic::whereNull('ending_at')
-            ->orWhere('ending_at', '>', $now->toDateString())->get();
-
-          echo json_encode($per);
-
-          foreach ($per as $p) {
-            echo "$p->next_period\n";
-            if((clone $p->next_period)->isToday()){
-              echo "Creo $p->name";
-              $e = new \App\Models\Expense;
-              $e->name = $p->name;
-              $e->type = $p->type;
-              $e->expensed_at = $now->toDateTimeString();
-              $e->amount = $p->amount;
-              $e->periodic_id = $p->id;
-              $e->save();
-
-              echo json_encode($p->categories);
-              foreach ($p->categories as $c) {
-                $e->categories()->sync($c->id);
-              }
-            } else {
-              // Skip
-            }
-
-          }
-
-        //})->everyMinute();
-        })->dailyAt('8:00');
+        $schedule->command('periodic:check')
+          //->everyMinute()
+          ->dailyAt('8:00')
+          ->appendOutputTo(storage_path('\logs\schedule.log'));
     }
 
     /**
