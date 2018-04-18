@@ -24,7 +24,7 @@ class DashboardController extends Controller
       $data['now'] = $now;
       $data['out'] = Expense::montlyExpenses($now);
       $data['in'] = Expense::montlyGain($now);
-      $data['bal'] = $data['in'] - $data['out'];
+
 
       $data['mov'] = Expense::orderBy('expensed_at', 'desc')->take(10)->get();
 
@@ -46,6 +46,7 @@ class DashboardController extends Controller
       //\Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
 
       $data['rem'] = round($periods->sum('yearly-balance') / 12.0);
+      $data['bal'] = $data['rem'] - $data['out'];
 
       $data['debits'] = Debit::take(10)->get();
 
