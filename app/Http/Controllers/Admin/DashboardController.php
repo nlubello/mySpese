@@ -46,7 +46,7 @@ class DashboardController extends Controller
       //\Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
 
       $data['rem'] = round($periods->sum('yearly-balance') / 12.0);
-      $data['bal'] = $data['rem'] - $data['out'];
+      $data['bal'] = $data['rem'] - $data['out'] + $data['in'];
 
       $data['debits'] = Debit::take(10)->get();
 
