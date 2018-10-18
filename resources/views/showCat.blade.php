@@ -24,7 +24,7 @@
   <div class="col-lg-4 col-xs-12">
     <div class="box box-default">
       <div class="box-header with-border">
-          <div class="box-title">Le ultime 10 movimentazioni</div>
+          <div class="box-title">Le movimentazioni</div>
       </div>
 
       <div class="box-body no-padding">
@@ -35,7 +35,7 @@
             <th>Data</th>
             <th style="width: 50px">Importo</th>
           </tr>
-          @foreach($crud->expenses as $m)
+          @foreach($expenses as $m)
           <tr class="clickable" data-href="{{backpack_url('expense') . '/' . $m->id . '/edit' }}">
             <td>{{$m->name}}</td>
             <td>{{Date::parse($m->expensed_at)->format(config('backpack.base.default_date_format'))}}</td>
@@ -50,6 +50,7 @@
           @endforeach
           </tbody>
         </table>
+        {{ $expenses->links() }}
       </div>
     </div>
   </div>

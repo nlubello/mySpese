@@ -156,6 +156,11 @@ class Category extends Model
       return "<span class='badge bg-$color'> $perc %</span>";
     }
 
+    public function detailsBtn(){
+      $url = backpack_url('category/'.$this->id);
+      return "<a class='btn btn-primary btn-xs' href='$url'>Dettagli</a>";
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
