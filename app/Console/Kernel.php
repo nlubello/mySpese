@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('periodic:check')
           ->everyMinute()
           //->dailyAt('8:00')
-          ->appendOutputTo(storage_path('\logs\schedule.log'));
+          ->appendOutputTo(storage_path('/logs/schedule.log'));
     }
 
     /**
