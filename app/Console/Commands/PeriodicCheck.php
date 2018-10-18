@@ -61,6 +61,7 @@ class PeriodicCheck extends Command
           $e->type = $p->type;
           $e->expensed_at = $now->toDateTimeString();
           $e->amount = $p->amount;
+          $e->user_id = $p->user_id;
           $e->periodic_id = $p->id;
           $e->save();
 
