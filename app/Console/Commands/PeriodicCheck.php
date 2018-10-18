@@ -57,7 +57,7 @@ class PeriodicCheck extends Command
         if((clone $p->next_period)->isToday()){
           $this->info("Creo $p->name");
           $e = new \App\Models\Expense;
-          $e->name = $p->name;
+          $e->name = $p->name . ' - ' . $now->monthName . '/' . $now->year;
           $e->type = $p->type;
           $e->expensed_at = $now->toDateTimeString();
           $e->amount = $p->amount;
