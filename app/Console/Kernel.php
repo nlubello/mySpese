@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         // Controllo le scadenze attive
         $schedule->command('periodic:check')
           //->everyMinute()
-          ->dailyAt('16:20')
+          ->dailyAt('14:24')
           ->appendOutputTo(storage_path('\logs\schedule.log'));
     }
 
