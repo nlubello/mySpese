@@ -106,7 +106,7 @@ class Expense extends Model
     public static function montlyStat($months = 12, $date, $catId = null){
 
       //$now = Carbon::now();
-      $now = clone $date;
+      $now = clone $date->firstOfMonth();
 
       $stat = array();
       for($i=0; $i<=$months; $i++){
@@ -145,7 +145,7 @@ class Expense extends Model
     public static function yearlyStat($date, $catId = null){
 
       //$now = Carbon::now();
-      $now = clone $date;
+      $now = clone $date->firstOfMonth();
 
       $stat = array();
       for($i=0; $i<=6; $i++){
