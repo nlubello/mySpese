@@ -143,8 +143,8 @@ class Category extends Model
 
     public function getPrevMonthDifferenceHTML(){
       $out = $this->getSum() > 0;
-      \Debugbar::info($this->name);
-      \Debugbar::info($out);
+      /*\Debugbar::info($this->name);
+      \Debugbar::info($out);*/
       
       $diff = $this->getPrevMonthDifference();
       $positive = $diff > 0;
