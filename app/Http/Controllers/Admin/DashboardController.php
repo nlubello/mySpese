@@ -26,14 +26,16 @@ class DashboardController extends Controller
       $data['in'] = Expense::montlyGain($now);
 
 
-      $data['mov'] = Expense::orderBy('expensed_at', 'desc')->take(10)->get();
+      $data['mov'] = Expense::orderBy('expensed_at', 'desc')->paginate(10, ['*'], 'mov');
+      //$data['mov']->withPath('mov');
 
       $tmp = Category::all();
       foreach ($tmp as &$k) {
         $k['sum'] = $k->getSum($now);
       }
-      $data['catin'] = $tmp->where('sum', '<', 0)->sortBy('sum')->take(5);
-      $data['catout'] = $tmp->where('sum', '>', 0)->sortByDesc('sum')->take(5);
+
+      $data['catin'] = $tmp->where('sum', '<', 0)->sortBy('sum');
+      $data['catout'] = $tmp->where('sum', '>', 0)->sortByDesc('sum');
 
       $data['stat30'] = Expense::dailyStat(30, $now);
       $data['statYr'] = Expense::montlyStat(12, $now);

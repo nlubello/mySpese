@@ -146,7 +146,7 @@
         <div class="col-md-4 col-xs-12">
             <div class="box box-default">
               <div class="box-header with-border">
-                  <div class="box-title">Le ultime 10 movimentazioni</div>
+                  <div class="box-title">Le ultime movimentazioni</div>
               </div>
 
               <div class="box-body no-padding">
@@ -170,8 +170,13 @@
                       {{$m->amount}} &euro;</span></td>
                   </tr>
                   @endforeach
+                  
                 </tbody>
+                <tfoot>
+                  
+                </tfoot>
               </table>
+              {{ $mov->links() }}
             </div>
           </div>
         </div>
@@ -179,7 +184,7 @@
         <div class="col-md-4 col-xs-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <div class="box-title">5 principali categorie di spesa</div>
+                    <div class="box-title">Categorie di spesa</div>
                 </div>
 
                 <div class="box-body no-padding">
@@ -189,6 +194,7 @@
                       <th style="width: 10px">#</th>
                       <th>Nome</th>
                       <th style="width: 80px">Importo</th>
+                      <th style="width: 80px">Andamento</th>
                     </tr>
                     @foreach($catin as $c)
                     <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
@@ -196,6 +202,7 @@
                       <td>{{$c->name}}</td>
                       <td><span class="badge bg-red">
                         {{$c->sum}} &euro;</span></td>
+                      <td>{!!$c->getPrevMonthDifferenceHTML()!!}</td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -204,7 +211,7 @@
             </div>
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <div class="box-title">5 principali categorie di incassi</div>
+                    <div class="box-title">Categorie di incassi</div>
                 </div>
 
                 <div class="box-body no-padding">
@@ -214,6 +221,7 @@
                       <th style="width: 10px">#</th>
                       <th>Nome</th>
                       <th style="width: 80px">Importo</th>
+                      <th style="width: 80px">Andamento</th>
                     </tr>
                     @foreach($catout as $c)
                     <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
@@ -221,6 +229,7 @@
                       <td>{{$c->name}}</td>
                       <td><span class="badge bg-green">
                         {{$c->sum}} &euro;</span></td>
+                      <td>{!!$c->getPrevMonthDifferenceHTML()!!}</td>
                     </tr>
                     @endforeach
                   </tbody>

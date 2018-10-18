@@ -34,7 +34,10 @@ class Category extends Model
       return '<i class="fa '.$this->icon.'" aria-hidden="true"></i>';
     }
 
-    public function getSum($date){
+    public function getSum($date = null){
+      if(is_null($date))
+        $date = Carbon::now();
+      
       $in = $this->expenses()
         ->whereMonth('expenses.expensed_at', $date->month)
         ->whereYear('expenses.expensed_at', $date->year)
@@ -111,6 +114,46 @@ class Category extends Model
 
       return $stat;
 
+    }
+
+    public function getPrevMonthDifference(){
+      $now = Carbon::now();
+
+      $stat = array();
+      for($i=0; $i<=1; $i++){
+        $tmp = array();
+        $start = (clone $now)->firstOfMonth()->toDateString();
+        $end = (clone $now)->lastOfMonth()->toDateString();
+
+        $tmp['y'] = $now->toDateString();
+        $tmp['exp'] = $this->expenses()
+          ->whereBetween('expensed_at', [$start, $end])
+          ->sum('amount');
+
+        $stat[] = $tmp;
+
+        $now->subMonth();
+      }
+
+      if ($stat[1]['exp'] != 0)
+        return ($stat[0]['exp'] - $stat[1]['exp']) / $stat[1]['exp'] * 100;
+      else
+        return 0;
+    }
+
+    public function getPrevMonthDifferenceHTML(){
+      $out = $this->getSum() > 0;
+      \Debugbar::info($this->name);
+      \Debugbar::info($out);
+      
+      $diff = $this->getPrevMonthDifference();
+      $positive = $diff > 0;
+
+      $perc = number_format($out ? $diff : -$diff, 0, '.', '');
+
+      $color = $out ? !$positive : $positive ? 'green': 'red';
+
+      return "<span class='badge bg-$color'> $perc %</span>";
     }
 
     /*
