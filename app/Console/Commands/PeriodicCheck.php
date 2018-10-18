@@ -46,8 +46,8 @@ class PeriodicCheck extends Command
       $per = \App\Models\Periodic::whereNull('ending_at')
         ->orWhere('ending_at', '>', $now->toDateString())->get();
 
-      $this->info("Tutti i periodici attivi:");
-      $this->info(json_encode($per));
+      //$this->info("Tutti i periodici attivi:");
+      //$this->info(json_encode($per));
 
       foreach ($per as $p) {
 
