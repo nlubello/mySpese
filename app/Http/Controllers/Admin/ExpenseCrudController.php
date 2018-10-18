@@ -218,6 +218,18 @@ class ExpenseCrudController extends CrudController
         // $this->crud->orderBy();
         // $this->crud->groupBy();
         // $this->crud->limit();
+
+        $this->crud->addFilter([ // daterange filter
+          'type' => 'date_range',
+          'name' => 'from_to',
+          'label'=> 'Intervallo di date'
+        ],
+        false,
+        function($value) { // if the filter is active, apply these constraints
+          $dates = json_decode($value);
+          $this->crud->addClause('where', 'expensed_at', '>=', $dates->from);
+          $this->crud->addClause('where', 'expensed_at', '<=', $dates->to);
+        });
     }
 
     public function store(StoreRequest $request)
