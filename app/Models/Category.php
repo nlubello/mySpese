@@ -159,7 +159,37 @@ class Category extends Model
 
     public function detailsBtn(){
       $url = backpack_url('category/'.$this->id);
-      return "<a class='btn btn-primary btn-xs' href='$url'>Dettagli</a>";
+      return "<a class='btn btn-primary btn-xs' href='$url'><i class='fa fa-eye'></i> Dettagli</a>";
+    }
+
+    public function getTotalExpense(){
+      return number_format($this->expenses->where('type', 0)->sum('amount'), 2, '.', '') . " &euro;";
+    }
+
+    public function getTotalProfit(){
+      return number_format($this->expenses->where('type', 1)->sum('amount'), 2, '.', '') . " &euro;";
+    }
+
+    public function getAvgExpense(){
+      $monthData = $this->expenses->where('type', 0)
+        ->groupBy(function (\App\Models\Expense $item) {
+          return $item->created_at->format('Y-m');
+        });
+      $sum = $monthData->sum(function ($item){
+          return $item->sum('amount');
+        });
+      return number_format($monthData->count() > 0 ? $sum / $monthData->count() : 0, 2, '.', '') . " &euro;";
+    }
+
+    public function getAvgProfit(){
+      $monthData = $this->expenses->where('type', 1)
+        ->groupBy(function (\App\Models\Expense $item) {
+          return $item->created_at->format('Y-m');
+        });
+      $sum = $monthData->sum(function ($item){
+          return $item->sum('amount');
+        });
+      return number_format($monthData->count() > 0 ? $sum / $monthData->count() : 0, 2, '.', '') . " &euro;";
     }
 
     /*

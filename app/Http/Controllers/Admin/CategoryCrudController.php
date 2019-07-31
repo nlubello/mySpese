@@ -86,7 +86,34 @@ class CategoryCrudController extends CrudController
              // 'suffix' => "(user)",
              // 'limit' => 120, // character limit; default is 80;
           ],
-
+          [
+            // run a function on the CRUD model and show its return value
+            'name' => "totalE",
+            'label' => "Spese totali", // Table column heading
+            'type' => "model_function",
+            'function_name' => 'getTotalExpense', // the method in your Model
+          ],
+          [
+           // run a function on the CRUD model and show its return value
+           'name' => "totalG",
+           'label' => "Spese totali", // Table column heading
+           'type' => "model_function",
+           'function_name' => 'getTotalProfit', // the method in your Model
+          ],
+          [
+            // run a function on the CRUD model and show its return value
+            'name' => "avgE",
+            'label' => "Spese totali", // Table column heading
+            'type' => "model_function",
+            'function_name' => 'getAvgExpense', // the method in your Model
+          ],
+          [
+            // run a function on the CRUD model and show its return value
+            'name' => "avgE",
+            'label' => "Spese totali", // Table column heading
+            'type' => "model_function",
+            'function_name' => 'getAvgProfit', // the method in your Model
+          ],
         ];
         $this->crud->addColumns($array_of_arrays); // add multiple columns, at the end of the stack
         // $this->crud->removeColumn('column_name'); // remove a column from the stack
@@ -173,7 +200,30 @@ class CategoryCrudController extends CrudController
       $data = array();
 
       $data['crud'] = \App\Models\Category::find($id);
+      // Eager Loading expensess
+      $data['crud']->load('expenses');
       \Debugbar::info($data['crud']);
+
+      $data['tExp'] = $data['crud']->expenses->where('type', 0)->sum('amount');
+      $data['tProf'] = $data['crud']->expenses->where('type', 1)->sum('amount');
+
+      $monthDataE = $data['crud']->expenses->where('type', 0)
+        ->groupBy(function (\App\Models\Expense $item) {
+          return $item->created_at->format('Y-m');
+        });
+      $sumE = $monthDataE->sum(function ($item){
+          return $item->sum('amount');
+        });
+      $data['mExp'] = $monthDataE->count() > 0 ? $sumE / $monthDataE->count() : 0;
+
+      $monthDataP = $data['crud']->expenses->where('type', 1)
+        ->groupBy(function (\App\Models\Expense $item) {
+          return $item->created_at->format('Y-m');
+        });
+      $sumP = $monthDataP->sum(function ($item){
+          return $item->sum('amount');
+        });
+      $data['mProf'] = $monthDataP->count() > 0 ? $sumP / $monthDataP->count() : 0;
 
       $data['expenses'] = $data['crud']->expenses()->orderBy('expensed_at', 'desc')->paginate(15);
       $data['statM'] = $data['crud']->montlyStat(12, $now, $id);
