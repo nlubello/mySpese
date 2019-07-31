@@ -15,17 +15,3 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::redirect('/admin', url('/'), 301);
-
-Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
-{
-
-  Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-
-  CRUD::resource('expense', 'ExpenseCrudController');
-  CRUD::resource('category', 'CategoryCrudController')->with(function(){
-    // add extra routes to this resource
-    Route::get('category/{id}/show', 'CategoryCrudController@show');
-});
-  CRUD::resource('periodic', 'PeriodicCrudController');
-  CRUD::resource('debit', 'DebitCrudController');
-});

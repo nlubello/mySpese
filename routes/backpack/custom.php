@@ -11,4 +11,13 @@ Route::group([
     'middleware' => ['web', config('backpack.base.middleware_key', 'admin')],
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
+    Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+
+    CRUD::resource('expense', 'ExpenseCrudController');
+    CRUD::resource('category', 'CategoryCrudController')->with(function(){
+    // add extra routes to this resource
+    Route::get('category/{id}/show', 'CategoryCrudController@show');
+    });
+    CRUD::resource('periodic', 'PeriodicCrudController');
+    CRUD::resource('debit', 'DebitCrudController');
 }); // this should be the absolute last line of this file
