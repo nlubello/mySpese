@@ -28,12 +28,12 @@
             $dTxt = $d->formatLocalized('%b %Y');
             $dUrl = $d->startOfMonth()->toDateString();
           @endphp
-          <li class="page-item"><a class="page-link"
+          <li class="page-item hidden-xs"><a class="page-link"
             href="{{ backpack_url('dashboard') . '?date=' . $dUrl }}">
             &laquo; {{ $dTxt }}
           </a></li>
 
-          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+          <li class="page-item disabled hidden-xs"><a class="page-link" href="#">...</a></li>
 
           @for ($i = 2; $i > 0; $i--)
             @php
@@ -41,7 +41,7 @@
               $dTxt = $d->formatLocalized('%b %Y');
               $dUrl = $d->startOfMonth()->toDateString();
             @endphp
-              <li class="page-item"><a class="page-link" href="{{backpack_url('dashboard') . '?date=' . $dUrl}}">
+              <li class="page-item {{$i==2 ? 'hidden-xs' : ''}}"><a class="page-link" href="{{backpack_url('dashboard') . '?date=' . $dUrl}}">
                 {{ $dTxt }}
               </a></li>
           @endfor
@@ -56,21 +56,21 @@
               $dTxt = $d->formatLocalized('%b %Y');
               $dUrl = $d->startOfMonth()->toDateString();
             @endphp
-              <li class="page-item"><a class="page-link" href="{{backpack_url('dashboard') . '?date=' . $dUrl}}">
+              <li class="page-item {{$i==2 ? 'hidden-xs' : ''}}"><a class="page-link" href="{{backpack_url('dashboard') . '?date=' . $dUrl}}">
                 {{ $dTxt }}
               </a></li>
           @endfor
 
-          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+          <li class="page-item disabled hidden-xs"><a class="page-link" href="#">...</a></li>
 
           @php
             $d = (clone $dC)->addYear();
             $dTxt = $d->formatLocalized('%b %Y');
             $dUrl = $d->startOfMonth()->toDateString();
           @endphp
-          <li class="page-item"><a class="page-link"
+          <li class="page-item hidden-xs"><a class="page-link"
             href="{{ backpack_url('dashboard') . '?date=' . $dUrl }}">
-            &laquo; {{ $dTxt }}
+            {{ $dTxt }} &raquo;
           </a></li>
 
         </ul>
@@ -156,6 +156,7 @@
                     <th>Nome</th>
                     <th>Data</th>
                     <th style="width: 50px">Importo</th>
+                    <th>Azioni</th>
                   </tr>
                   @foreach($mov as $m)
                   <tr class="clickable" data-href="{{backpack_url('expense') . '/' . $m->id . '/edit' }}">
@@ -168,6 +169,9 @@
                       <span class="badge bg-green">
                       @endif
                       {{$m->amount}} &euro;</span></td>
+                      <td>
+                        <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="fa fa-edit"></i></a>
+                      </td>
                   </tr>
                   @endforeach
                   
@@ -346,7 +350,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6  col-xs-12">
+      <div class="col-md-12">
           <div class="box box-default">
               <div class="box-header with-border">
                   <div class="box-title">Statistiche ultimi 30 gg</div>
@@ -355,14 +359,26 @@
               <div class="box-body"><div id="line-30"></div></div>
           </div>
       </div>
-      <div class="col-md-6  col-xs-12">
-          <div class="box box-default">
-              <div class="box-header with-border">
-                  <div class="box-title">Statistiche ultimi 12 mesi</div>
-              </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-title">Statistiche ultimi 12 mesi</div>
+            </div>
 
-              <div class="box-body"><div id="line-yr"></div></div>
-          </div>
+            <div class="box-body">
+              <div class="col-md-6 col-xs-12">
+                <div id="line-yr"></div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div id="pie-yr-exp"></div>
+              </div>
+              <div class="col-md-3 col-xs-12">
+                <div id="pie-yr-pro"></div>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
 @endsection
@@ -404,6 +420,41 @@ $( document ).ready(function() {
     xLabels: 'month',
     lineColors: ['#5cb85c', '#d9534f']
     });
+  Morris.Donut({
+    element: 'pie-yr-exp',
+    data: {!!json_encode($statCatE)!!},
+    colors: [
+      '#0C9D01',
+      '#24A702',
+      '#3CB204',
+      '#55BD05',
+      '#6DC807',
+      '#86D308',
+      '#9EDE0A',
+      '#B7E90B',
+      '#CFF40D',
+      '#E8FF0F'
+    ],
+    formatter : function (y, data) { return parseFloat(y).toFixed(2) + ' €' }
+    });
+  Morris.Donut({
+    element: 'pie-yr-pro',
+    data: {!!json_encode($statCatP)!!},
+    colors: [
+      '#DF0118',
+      '#E21817',
+      '#E52F16',
+      '#E84715',
+      '#EB5E14',
+      '#EF7613',
+      '#F28D12',
+      '#F28D12',
+      '#F5A411',
+      '#F8BC10'
+    ],
+    formatter : function (y, data) { return parseFloat(y).toFixed(2) + ' €' }
+    });
+
 
   $(".clickable").click(function(){
     window.location = $(this).data("href");

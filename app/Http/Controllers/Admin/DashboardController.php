@@ -40,6 +40,20 @@ class DashboardController extends Controller
       $data['stat30'] = Expense::dailyStat(30, $now);
       $data['statYr'] = Expense::montlyStat(12, $now);
 
+      $data['statCatE'] = [];
+      $data['statCatP'] = [];
+      foreach ($tmp as $k) {
+        \Debugbar::info($k->name);
+        $yearlyS = $k->getYearlySum($now);
+        if($yearlyS > 0){
+          $data['statCatE'][] = ['label' => $k->name, 'value' => $yearlyS];
+        }
+        if($yearlyS < 0){
+          $data['statCatP'][] = ['label' => $k->name, 'value' => $yearlyS];
+        }
+      }
+      
+
       $end = (clone $now)->subDays(30);
       $periods = Periodic::whereNull('ending_at')
         ->orWhere('ending_at', '>', $now->toDateString())->get();

@@ -53,6 +53,23 @@ class Category extends Model
       return $in - $out;
     }
 
+    public function getYearlySum($date = null){
+      if(is_null($date))
+        $date = Carbon::now();
+      
+      $in = $this->expenses()
+        ->whereYear('expenses.expensed_at', $date->year)
+        ->where('type', 1)
+        ->sum('amount');
+
+      $out = $this->expenses()
+        ->whereYear('expenses.expensed_at', $date->year)
+        ->where('type', 0)
+        ->sum('amount');
+
+      return $in - $out;
+    }
+
     public function montlyStat($months = 12, $date){
 
       //$now = Carbon::now();
