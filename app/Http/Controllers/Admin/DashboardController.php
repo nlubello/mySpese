@@ -50,7 +50,7 @@ class DashboardController extends Controller
       $data['rem'] = round($periods->sum('yearly-balance') / 12.0);
       $data['bal'] = $data['rem'] - $data['out'] + $data['in'];
 
-      $data['debits'] = Debit::take(10)->get();
+      $data['debits'] = Debit::paginate(10, ['*'], 'debits');
 
       return view('dashboard', $data);
     }

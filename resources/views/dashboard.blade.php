@@ -298,6 +298,7 @@
                 @endforeach
               </tbody>
             </table>
+            {{ $debits->links() }}
           </div>
         </div>
         </div>

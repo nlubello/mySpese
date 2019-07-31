@@ -6,7 +6,7 @@
     RewriteEngine On
 
     # Debug on locale
-    #RewriteBase /myspese/public/
+    # RewriteBase /mySpese/public/
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
