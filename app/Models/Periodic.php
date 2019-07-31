@@ -98,7 +98,7 @@ class Periodic extends Model
         $date = $this->prev_period;
       }
 
-      if(!is_null(getExpense($date)))
+      if(!is_null($this->getExpense($date)))
         return false;
 
       $e = new \App\Models\Expense;
