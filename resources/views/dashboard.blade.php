@@ -241,6 +241,47 @@
         <div class="col-md-4 col-xs-12">
             <div class="box box-default">
               <div class="box-header with-border">
+                  <div class="box-title">Entrate e uscite da registrare</div>
+              </div>
+
+              <div class="box-body no-padding">
+                <table class="table">
+                  <tbody>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Scaduta</th>
+                    <th style="width: 50px">Importo</th>
+                    <th>Azioni</th>
+                  </tr>
+                  @foreach($expPeriodics as $p)
+                  <tr>
+                    <td>{{$p->name}}</td>
+                    <td class="text-danger">{{Date::parse($p->prev_period)->format(config('backpack.base.default_date_format'))}}</td>
+                    <td>
+                      @if($p->type == 0)
+                      <span class="badge bg-red">
+                      @elseif($p->type == 1)
+                      <span class="badge bg-green">
+                      @endif
+                      {{$p->amount}} &euro;</span></td>
+                      <td>
+                        @php
+                            $e = $p->getExpense();
+                        @endphp
+                        @if(is_null($e))
+                          <a class="btn btn-xs btn-success" href="{{backpack_url('periodic').'/'.$p->id.'/register'}}">Registra</a>
+                        @else
+                          <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$p->id.'/edit'}}">Modifica</a>
+                        @endif
+                      </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            </div>
+            <div class="box box-default">
+              <div class="box-header with-border">
                   <div class="box-title">Le prossime entrate e uscite</div>
               </div>
 

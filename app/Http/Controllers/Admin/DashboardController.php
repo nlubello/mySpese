@@ -44,6 +44,7 @@ class DashboardController extends Controller
       $periods = Periodic::whereNull('ending_at')
         ->orWhere('ending_at', '>', $now->toDateString())->get();
       $data['periodics'] = $periods->sortBy('next_period')->take(10);
+      $data['expPeriodics'] = $periods->sortByDesc('prev_period')->take(5);
 
       //\Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
 

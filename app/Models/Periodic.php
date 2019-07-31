@@ -80,6 +80,44 @@ class Periodic extends Model
       }
     }
 
+    public function getExpense($date=null){
+
+      if(is_null($date)){
+        $date = $this->prev_period;
+      }
+
+      $e = $this->expenses()->whereDate('expensed_at', $date)->first();
+
+      return $e;
+    }
+
+    public function createExpense($date=null){
+      $now = Carbon::now();
+
+      if(is_null($date)){
+        $date = $this->prev_period;
+      }
+
+      if(!is_null(getExpense($date)))
+        return false;
+
+      $e = new \App\Models\Expense;
+      $e->name = $this->name . ' - ' . $now->month . '/' . $now->year;
+      $e->type = $this->type;
+      $e->expensed_at = $date;
+      $e->amount = $this->amount;
+      $e->user_id = $this->user_id;
+      $e->periodic_id = $this->id;
+      $e->save();
+
+      //echo json_encode($p->categories);
+      foreach ($this->categories as $c) {
+        $e->categories()->sync($c->id);
+      }
+
+      return true;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -148,6 +186,22 @@ class Periodic extends Model
       }
 
       return $tmpD;
+    }
+
+    public function getPrevPeriodAttribute()
+    {
+      $now = Carbon::now()->startOfDay();
+      $tmpD = clone $this->starting_at->startOfDay();
+      $prevD = clone $this->starting_at->startOfDay();
+
+      while ($tmpD->lt($now)){
+
+        $prevD = clone $tmpD;
+        $tmpD = $this->nextDate($tmpD);
+
+      }
+
+      return $prevD;
     }
 
 

@@ -15,9 +15,12 @@ Route::group([
 
     CRUD::resource('expense', 'ExpenseCrudController');
     CRUD::resource('category', 'CategoryCrudController')->with(function(){
-    // add extra routes to this resource
-    Route::get('category/{id}/show', 'CategoryCrudController@show');
+        // add extra routes to this resource
+        Route::get('category/{id}/show', 'CategoryCrudController@show');
     });
-    CRUD::resource('periodic', 'PeriodicCrudController');
+    CRUD::resource('periodic', 'PeriodicCrudController')->with(function(){
+        // add extra routes to this resource
+        Route::get('periodic/{id}/register', 'PeriodicCrudController@register');
+    });
     CRUD::resource('debit', 'DebitCrudController');
 }); // this should be the absolute last line of this file

@@ -7,6 +7,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\PeriodicRequest as StoreRequest;
 use App\Http\Requests\PeriodicRequest as UpdateRequest;
+use Illuminate\Http\Request;
 
 class PeriodicCrudController extends CrudController
 {
@@ -257,5 +258,18 @@ class PeriodicCrudController extends CrudController
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
+    }
+
+    public function register(Request $request, $id){
+        $p = \App\Models\Periodic::findOrFail($id);
+        $res = $p->createExpense();
+
+        if($res){
+          \Alert::success('Ricorrenza registrata con successo!')->flash();
+        } else {
+          \Alert::error('Impossibile registrare la ricorrenza')->flash();
+        }
+        
+        return redirect(backpack_url('dashboard'));
     }
 }
