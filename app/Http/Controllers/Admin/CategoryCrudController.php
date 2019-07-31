@@ -96,21 +96,21 @@ class CategoryCrudController extends CrudController
           [
            // run a function on the CRUD model and show its return value
            'name' => "totalG",
-           'label' => "Spese totali", // Table column heading
+           'label' => "Guadagni totali", // Table column heading
            'type' => "model_function",
            'function_name' => 'getTotalProfit', // the method in your Model
           ],
           [
             // run a function on the CRUD model and show its return value
             'name' => "avgE",
-            'label' => "Spese totali", // Table column heading
+            'label' => "Spesa media mensile", // Table column heading
             'type' => "model_function",
             'function_name' => 'getAvgExpense', // the method in your Model
           ],
           [
             // run a function on the CRUD model and show its return value
-            'name' => "avgE",
-            'label' => "Spese totali", // Table column heading
+            'name' => "avgP",
+            'label' => "Profitti medi mensili", // Table column heading
             'type' => "model_function",
             'function_name' => 'getAvgProfit', // the method in your Model
           ],
