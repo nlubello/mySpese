@@ -269,9 +269,9 @@
                             $e = $p->getExpense();
                         @endphp
                         @if(is_null($e))
-                          <a class="btn btn-xs btn-success" href="{{backpack_url('periodic').'/'.$p->id.'/register'}}">Registra</a>
+                          <a class="btn btn-xs btn-success" href="{{backpack_url('periodic').'/'.$p->id.'/register'}}"><i class="fa fa-plus-circle" aria-hidden="true"></i> Registra</a>
                         @else
-                          <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$p->id.'/edit'}}">Modifica</a>
+                          <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$p->id.'/edit'}}"><i class="fa fa-edit"></i> Modifica</a>
                         @endif
                       </td>
                   </tr>

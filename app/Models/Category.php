@@ -96,7 +96,8 @@ class Category extends Model
         $start = (clone $now)->firstOfYear()->toDateString();
         $end = (clone $now)->lastOfYear()->toDateString();
 
-        $tmp['y'] = $now->toDateString();
+        //$tmp['y'] = $now->toDateString();
+        $tmp['y'] = $now->year;
         $tmp['in'] = $this->expenses()
           ->whereBetween('expensed_at', [$start, $end])
           ->where('type', 1);

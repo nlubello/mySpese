@@ -7,7 +7,8 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{ backpack_url() }}">{{ config('backpack.base.project_name') }}</a></li>
-        <li class="active">{{ trans('backpack::base.dashboard') }}</li>
+        <li><a href="{{ backpack_url('category') }}">Categorie</a></li>
+        <li class="active">{{ $crud->name }}</li>
       </ol>
     </section>
 @endsection
@@ -15,8 +16,8 @@
 
 @section('content')
 <div class="row">
-  <div class="col-xs-12 text-center">
-
+  <div class="col-xs-12" style="margin: 10px;">
+      <a href="{{ backpack_url('category') }}"><i class="fa fa-angle-double-left"></i> Torna a tutte le  <span>Categorie</span></a>
   </div>
 </div>
 
@@ -34,6 +35,7 @@
             <th>Nome</th>
             <th>Data</th>
             <th style="width: 50px">Importo</th>
+            <th>Azioni</th>
           </tr>
           @foreach($expenses as $m)
           <tr class="clickable" data-href="{{backpack_url('expense') . '/' . $m->id . '/edit' }}">
@@ -46,6 +48,9 @@
               <span class="badge bg-green">
               @endif
               {{$m->amount}} &euro;</span></td>
+            <td>
+              <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="fa fa-edit"></i> Modifica</a>
+            </td>
           </tr>
           @endforeach
           </tbody>
@@ -95,14 +100,14 @@ $( document ).ready(function() {
     lineColors: ['#5cb85c', '#d9534f']
     });
 
-  Morris.Line({
+  Morris.Bar({
     element: 'line-y',
     data: {!!json_encode($statY)!!},
     xkey: 'y',
     ykeys: ['in', 'out'],
     labels: ['Entrate', 'Uscite'],
     xLabels: 'year',
-    lineColors: ['#5cb85c', '#d9534f']
+    barColors: ['#5cb85c', '#d9534f']
     });
 
 });
