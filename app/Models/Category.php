@@ -82,7 +82,7 @@ class Category extends Model
         $end = (clone $now)->lastOfMonth()->toDateString();
 
         //$tmp['y'] = $now->format(config('backpack.base.default_date_format'));
-        $tmp['y'] = $now->toDateString();
+        $tmp['y'] = (clone $now)->firstOfMonth()->toDateString();
         $tmp['in'] = $this->expenses()
           ->whereBetween('expensed_at', [$start, $end])
           ->where('type', 1);
