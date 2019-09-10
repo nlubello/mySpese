@@ -201,7 +201,12 @@ class Periodic extends Model
 
       }
 
-      return $prevD;
+      // Periodics not yet started
+      if($tmpD->lt(Carbon::now())){
+        return null;
+      }
+
+      return $prevD;      
     }
 
 
