@@ -95,7 +95,7 @@ return [
          * Here you can specify how emails should be sent.
          */
         'mail' => [
-            'to'   => 'your@email.com',
+            'to'   => 'nlubello@gmail.com',
         ],
 
         /*

@@ -33,6 +33,10 @@ class Kernel extends ConsoleKernel
           //->everyMinute()
           ->dailyAt('6:00')
           ->appendOutputTo(storage_path('/logs/schedule.log'));
+
+        // Backup
+        $schedule->command('backup:clean')->daily()->at('04:00');
+        $schedule->command('backup:run')->daily()->at('05:00');
     }
 
     /**
