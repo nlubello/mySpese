@@ -57,7 +57,7 @@
           <div class="col-sm-3 col-xs-6">
               <div class="description-block">
                 <span class="description-percentage text-red hidden"><i class="fa fa-caret-down"></i> 18%</span>
-                <h5 class="description-header">{{number_format($yProf, 2, '.', '')}} &euro;</h5>
+                <h5 class="description-header">{{number_format($yExp, 2, '.', '')}} &euro;</h5>
                 <span class="description-text">SPESA MEDIA ANNUALE</span>
               </div>
               <!-- /.description-block -->
@@ -174,7 +174,9 @@ $( document ).ready(function() {
     ykeys: ['in', 'out'],
     labels: ['Entrate', 'Uscite'],
     xLabels: 'month',
-    lineColors: ['#5cb85c', '#d9534f']
+    lineColors: ['#5cb85c', '#d9534f'],
+    goals: [{{$mProf}}, {{$mExp}}],
+    goalLineColors: ['#5cb873', '#d9764f']
     });
 
   Morris.Bar({
@@ -184,7 +186,9 @@ $( document ).ready(function() {
     ykeys: ['in', 'out'],
     labels: ['Entrate', 'Uscite'],
     xLabels: 'year',
-    barColors: ['#5cb85c', '#d9534f']
+    barColors: ['#5cb85c', '#d9534f'],
+    goals: [{{$yProf}}, {{$yExp}}],
+    goalLineColors: ['#5cb873', '#d9764f']
     });
 
 });

@@ -26,7 +26,10 @@ class DashboardController extends Controller
       $data['in'] = Expense::montlyGain($now);
 
 
-      $data['mov'] = Expense::orderBy('expensed_at', 'desc')->paginate(10, ['*'], 'mov');
+      $data['mov'] = Expense::orderBy('expensed_at', 'desc')
+        ->whereMonth('expensed_at', $now->month)
+        ->whereYear('expensed_at', $now->year)
+        ->paginate(10, ['*'], 'mov');
       //$data['mov']->withPath('mov');
 
       $tmp = Category::all();
