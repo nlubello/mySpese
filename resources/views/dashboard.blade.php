@@ -206,7 +206,7 @@
                       <td>{{$c->name}}</td>
                       <td><span class="badge bg-red">
                         {{$c->sum}} &euro;</span></td>
-                      <td>{!!$c->getPrevMonthDifferenceHTML()!!}</td>
+                      <td>{!!$c->getPrevMonthsDifferenceHTML($now)!!}</td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -233,7 +233,7 @@
                       <td>{{$c->name}}</td>
                       <td><span class="badge bg-green">
                         {{$c->sum}} &euro;</span></td>
-                      <td>{!!$c->getPrevMonthDifferenceHTML()!!}</td>
+                      <td>{!!$c->getPrevMonthsDifferenceHTML($now)!!}</td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -398,6 +398,7 @@ tr.clickable:hover{
 @section('after_scripts')
 <script src="{{ asset('vendor/adminlte') }}/bower_components/raphael/raphael.min.js"></script>
 <script src="{{ asset('vendor/adminlte') }}/bower_components/morris.js/morris.min.js"></script>
+<script src="{{ asset('vendor/adminlte') }}/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
 
 <script>
 $( document ).ready(function() {
@@ -458,6 +459,17 @@ $( document ).ready(function() {
 
   $(".clickable").click(function(){
     window.location = $(this).data("href");
+  });
+
+  $('.sparkbar').each(function () {
+    var $this = $(this);
+    $this.sparkline('html', {
+      type    : 'bar',
+      height  : $this.data('height') ? $this.data('height') : '30',
+      barColor: $this.data('color'),
+      negBarColor: $this.data('negcolor'),
+      zeroAxis: true
+    });
   });
 });
 </script>

@@ -17,6 +17,7 @@ Route::group([
     CRUD::resource('category', 'CategoryCrudController')->with(function(){
         // add extra routes to this resource
         Route::get('category/{id}/show', 'CategoryCrudController@show');
+        Route::get('category/ajax-category-options', 'CategoryCrudController@categoryOptions');
     });
     CRUD::resource('periodic', 'PeriodicCrudController')->with(function(){
         // add extra routes to this resource

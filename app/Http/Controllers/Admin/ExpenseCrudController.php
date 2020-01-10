@@ -230,6 +230,18 @@ class ExpenseCrudController extends CrudController
           $this->crud->addClause('where', 'expensed_at', '>=', $dates->from);
           $this->crud->addClause('where', 'expensed_at', '<=', $dates->to);
         });
+        $this->crud->addFilter([ // select2_ajax filter
+            'name' => 'category_id',
+            'type' => 'select2_ajax',
+            'label'=> 'Categoria',
+            'placeholder' => 'Seleziona una categoria'
+          ],
+          url('admin/category/ajax-category-options'), // the ajax route
+          function($value) { // if the filter is active
+            $this->crud->query = $this->crud->query->whereHas('categories', function ($query) use ($value) {
+              $query->where('category_id', $value);
+            });
+          });
     }
 
     public function store(StoreRequest $request)

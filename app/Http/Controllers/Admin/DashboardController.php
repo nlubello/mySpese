@@ -46,7 +46,7 @@ class DashboardController extends Controller
       $data['statCatE'] = [];
       $data['statCatP'] = [];
       foreach ($tmp as $k) {
-        \Debugbar::info($k->name);
+        //\Debugbar::info($k->name);
         $yearlyS = $k->getYearlySum($now);
         if($yearlyS > 0){
           $data['statCatE'][] = ['label' => $k->name, 'value' => $yearlyS];

@@ -28,9 +28,9 @@
         <h3 class="box-title">Report della categoria</h3>
 
         <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse">
-            <i class="fa fa-minus"></i>
-          </button>
+          <a class="btn btn-box-tool" href="{{backpack_url('category').'/'.$crud->id.'/edit'}}">
+            <i class="fa fa-edit"></i>
+          </a>
         </div>
       </div>
       <!-- /.box-header -->
@@ -55,26 +55,98 @@
           </div>
           <!-- /.col -->
           <div class="col-sm-3 col-xs-6">
-              <div class="description-block">
-                <span class="description-percentage text-red hidden"><i class="fa fa-caret-down"></i> 18%</span>
-                <h5 class="description-header">{{number_format($yExp, 2, '.', '')}} &euro;</h5>
-                <span class="description-text">SPESA MEDIA ANNUALE</span>
-              </div>
-              <!-- /.description-block -->
+            <div class="description-block">
+              @php
+              if($crud['budget_expense'] > 0){
+                $value = intval($yExp / $crud['budget_expense'] * 100) - 100;
+              } else {
+                $value = 0;
+              }
+
+              if($value > 0){
+                $class = 'fa-caret-up';
+                $txtColor = 'text-red';
+              } elseif ($value == 0) {
+                $class = 'fa-caret-right';
+                $txtColor = '';
+              } else {
+                $class = 'fa-caret-down';
+                $txtColor = 'text-green';
+              }
+              @endphp
+              <span class="description-percentage {{$txtColor}}"><i class="fa {{$class}}"></i> {{$value}}%</span>
+              <h5 class="description-header">{{number_format($yExp, 2, '.', '')}} &euro;</h5>
+              <span class="description-text">SPESA MEDIA ANNUALE</span>
             </div>
-            <!-- /.col -->
-            <div class="col-sm-3 col-xs-6">
-                <div class="description-block">
-                  <span class="description-percentage text-red hidden"><i class="fa fa-caret-down"></i> 18%</span>
-                  <h5 class="description-header">{{number_format($yProf, 2, '.', '')}} &euro;</h5>
-                  <span class="description-text">RICAVO MEDIO ANNUALE</span>
-                </div>
-                <!-- /.description-block -->
-              </div>
-              <!-- /.col -->
+            <!-- /.description-block -->
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-3 col-xs-6">
+            <div class="description-block">
+              @php
+              if($crud['budget_income'] > 0){
+                $value = intval($yProf / $crud['budget_income'] * 100) - 100;
+              } else {
+                $value = 0;
+              }
+              
+              if($value > 0){
+                $class = 'fa-caret-up';
+                $txtColor = 'text-green';
+              } elseif ($value == 0) {
+                $class = 'fa-caret-right';
+                $txtColor = '';
+              } else {
+                $class = 'fa-caret-down';
+                $txtColor = 'text-red';
+              }
+              @endphp
+              <span class="description-percentage {{$txtColor}}"><i class="fa {{$class}}"></i> {{$value}}%</span>
+              <h5 class="description-header">{{number_format($yProf, 2, '.', '')}} &euro;</h5>
+              <span class="description-text">RICAVO MEDIO ANNUALE</span>
+            </div>
+            <!-- /.description-block -->
+          </div>
+          <!-- /.col -->
           <div class="col-sm-3 col-xs-6">
             <div class="description-block border-right">
               <span class="description-percentage text-green hidden"><i class="fa fa-caret-up"></i> 20%</span>
+              <h5 class="description-header">{{number_format($crud['budget_expense'], 2, '.', '')}} &euro;</h5>
+              <span class="description-text">BUDGET ANNUALE SPESA</span>
+            </div>
+            <!-- /.description-block -->
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-3 col-xs-6">
+            <div class="description-block">
+              <span class="description-percentage text-red hidden"><i class="fa fa-caret-down"></i> 18%</span>
+              <h5 class="description-header">{{number_format($crud['budget_income'], 2, '.', '')}} &euro;</h5>
+              <span class="description-text">BUDGET ANNUALE INCASSI</span>
+            </div>
+            <!-- /.description-block -->
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-3 col-xs-6">
+            <div class="description-block border-right">
+              @php
+              if($crud['budget_expense'] > 0){
+                $value = intval($mExp / ($crud['budget_expense'] / 12) * 100) - 100;
+              } else {
+                $value = 0;
+              }
+              
+              if($value > 0){
+                $class = 'fa-caret-up';
+                $txtColor = 'text-red';
+              } elseif ($value == 0) {
+                $class = 'fa-caret-right';
+                $txtColor = '';
+              } else {
+                $class = 'fa-caret-down';
+                $txtColor = 'text-green';
+              }
+              @endphp
+              <span class="description-percentage {{$txtColor}}"><i class="fa {{$class}}"></i> {{$value}}%</span>
               <h5 class="description-header">{{number_format($mExp, 2, '.', '')}} &euro;</h5>
               <span class="description-text">SPESA MEDIA MENSILE</span>
             </div>
@@ -83,7 +155,25 @@
           <!-- /.col -->
           <div class="col-sm-3 col-xs-6">
             <div class="description-block">
-              <span class="description-percentage text-red hidden"><i class="fa fa-caret-down"></i> 18%</span>
+              @php
+              if($crud['budget_income'] > 0){
+                $value = intval($mProf / ($crud['budget_income'] / 12) * 100) - 100;
+              } else {
+                $value = 0;
+              }
+              
+              if($value > 0){
+                $class = 'fa-caret-up';
+                $txtColor = 'text-green';
+              } elseif ($value == 0) {
+                $class = 'fa-caret-right';
+                $txtColor = '';
+              } else {
+                $class = 'fa-caret-down';
+                $txtColor = 'text-red';
+              }
+              @endphp
+              <span class="description-percentage {{$txtColor}}"><i class="fa {{$class}}"></i> {{$value}}%</span>
               <h5 class="description-header">{{number_format($mProf, 2, '.', '')}} &euro;</h5>
               <span class="description-text">RICAVO MEDIO MENSILE</span>
             </div>
@@ -175,8 +265,8 @@ $( document ).ready(function() {
     labels: ['Entrate', 'Uscite'],
     xLabels: 'month',
     lineColors: ['#5cb85c', '#d9534f'],
-    goals: [{{$mProf}}, {{$mExp}}],
-    goalLineColors: ['#5cb873', '#d9764f']
+    goals: [{{$mProf}}, {{$mExp}}, {{$crud['budget_income']/12}}, {{$crud['budget_expense']/12}}],
+    goalLineColors: ['#5cb873', '#d9764f', '#ff4500', '#ff8500']
     });
 
   Morris.Bar({

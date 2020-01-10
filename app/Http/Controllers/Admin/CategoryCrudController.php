@@ -8,6 +8,7 @@ use Carbon\Carbon;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\CategoryRequest as StoreRequest;
 use App\Http\Requests\CategoryRequest as UpdateRequest;
+use Illuminate\Http\Request;
 
 class CategoryCrudController extends CrudController
 {
@@ -63,6 +64,22 @@ class CategoryCrudController extends CrudController
             'name' => 'icon',
             'type' => 'icon_picker',
             'iconset' => 'fontawesome' // options: fontawesome, glyphicon, ionicon, weathericon, mapicon, octicon, typicon, elusiveicon, materialdesign
+          ],
+          [
+            'name' => 'budget_income', // The db column name
+            'label' => "Budget annuale di incasso", // Table column heading
+            'type' => 'number',
+            'prefix' => "€",
+            // 'suffix' => " EUR",
+            'decimals' => 2,
+          ],
+          [
+            'name' => 'budget_expense', // The db column name
+            'label' => "Budget annuale di spesa", // Table column heading
+            'type' => 'number',
+            'prefix' => "€",
+            // 'suffix' => " EUR",
+            'decimals' => 2,
           ],
         ];
         $this->crud->addFields($array_of_arrays, 'update/create/both');
@@ -250,5 +267,11 @@ class CategoryCrudController extends CrudController
       $data['statY'] = $data['crud']->yearlyStat($now, $id);
 
       return view('showCat', $data);
+    }
+
+    public function categoryOptions(Request $request){
+      $term = $request->input('term');
+      $options = \App\Models\Category::where('name', 'like', '%'.$term.'%')->get()->pluck('name', 'id');
+      return $options;
     }
 }

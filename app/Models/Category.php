@@ -21,7 +21,7 @@ class Category extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'icon', 'type'];
+    protected $fillable = ['name', 'icon', 'type', 'budget_income', 'budget_expense'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -134,44 +134,26 @@ class Category extends Model
 
     }
 
-    public function getPrevMonthDifference(){
-      $now = Carbon::now();
+    public function getPrevMonthsDifferenceHTML($date){
+      $now = clone $date;
 
-      $stat = array();
-      for($i=0; $i<=1; $i++){
-        $tmp = array();
-        $start = (clone $now)->firstOfMonth()->toDateString();
-        $end = (clone $now)->lastOfMonth()->toDateString();
+      $stats = $this->montlyStat(5, $date);
+      $percIn = [];
+      $percOut = [];
+      foreach($stats as $s){
+        $tmpIn = round(floatVal($s['in']) - ($this->budget_income / 12), 2);
+        $tmpOut = round(floatVal($s['out']) - ($this->budget_expense / 12), 2);
 
-        $tmp['y'] = $now->toDateString();
-        $tmp['exp'] = $this->expenses()
-          ->whereBetween('expensed_at', [$start, $end])
-          ->sum('amount');
-
-        $stat[] = $tmp;
-
-        $now->subMonth();
+        $percIn[] = $tmpIn;
+        $percOut[] = $tmpOut;
       }
 
-      if ($stat[1]['exp'] != 0)
-        return ($stat[0]['exp'] - $stat[1]['exp']) / $stat[1]['exp'] * 100;
-      else
-        return 0;
-    }
-
-    public function getPrevMonthDifferenceHTML(){
-      $out = $this->getSum() > 0;
-      /*\Debugbar::info($this->name);
-      \Debugbar::info($out);*/
-      
-      $diff = $this->getPrevMonthDifference();
-      $positive = $diff > 0;
-
-      $perc = number_format($out ? $diff : -$diff, 0, '.', '');
-
-      $color = $out ? !$positive : $positive ? 'green': 'red';
-
-      return "<span class='badge bg-$color'> $perc %</span>";
+      //return "<span class='badge bg-$color'> $perc %</span>";
+      $red = "#dd4b39";
+      $green = "#00a65a";
+      $htmlIn = '<div class="sparkbar" data-color="'.$green.'" data-negColor="'.$red.'" data-height="20" style="display: inline;">'.rtrim(implode(',', $percIn), ',').'</div>';
+      $htmlOut = '<div class="sparkbar" data-color="'.$red.'" data-negColor="'.$green.'" data-height="20" style="display: inline; margin-left: 5px;">'.rtrim(implode(',', $percOut), ',').'</div>';
+      return $htmlIn.$htmlOut;
     }
 
     public function detailsBtn(){
