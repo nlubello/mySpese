@@ -55,6 +55,24 @@
           </div>
           <!-- /.col -->
           <div class="col-sm-3 col-xs-6">
+              <div class="description-block">
+                <span class="description-percentage text-red hidden"><i class="fa fa-caret-down"></i> 18%</span>
+                <h5 class="description-header">{{number_format($yProf, 2, '.', '')}} &euro;</h5>
+                <span class="description-text">SPESA MEDIA ANNUALE</span>
+              </div>
+              <!-- /.description-block -->
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-3 col-xs-6">
+                <div class="description-block">
+                  <span class="description-percentage text-red hidden"><i class="fa fa-caret-down"></i> 18%</span>
+                  <h5 class="description-header">{{number_format($yProf, 2, '.', '')}} &euro;</h5>
+                  <span class="description-text">RICAVO MEDIO ANNUALE</span>
+                </div>
+                <!-- /.description-block -->
+              </div>
+              <!-- /.col -->
+          <div class="col-sm-3 col-xs-6">
             <div class="description-block border-right">
               <span class="description-percentage text-green hidden"><i class="fa fa-caret-up"></i> 20%</span>
               <h5 class="description-header">{{number_format($mExp, 2, '.', '')}} &euro;</h5>
@@ -71,6 +89,7 @@
             </div>
             <!-- /.description-block -->
           </div>
+          <!-- /.col -->
         </div>
         <!-- /.row -->
       </div>

@@ -185,6 +185,9 @@ class Periodic extends Model
 
       }
 
+      if($tmpD->gt($this->ending_at->endOfDay()))
+        return null;
+      
       return $tmpD;
     }
 

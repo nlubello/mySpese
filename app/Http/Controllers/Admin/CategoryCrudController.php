@@ -207,6 +207,7 @@ class CategoryCrudController extends CrudController
       $data['tExp'] = $data['crud']->expenses->where('type', 0)->sum('amount');
       $data['tProf'] = $data['crud']->expenses->where('type', 1)->sum('amount');
 
+      // Monthly query
       $monthDataE = $data['crud']->expenses->where('type', 0)
         ->groupBy(function (\App\Models\Expense $item) {
           return $item->created_at->format('Y-m');
@@ -224,6 +225,25 @@ class CategoryCrudController extends CrudController
           return $item->sum('amount');
         });
       $data['mProf'] = $monthDataP->count() > 0 ? $sumP / $monthDataP->count() : 0;
+
+      // Yearly query
+      $yearDataE = $data['crud']->expenses->where('type', 0)
+        ->groupBy(function (\App\Models\Expense $item) {
+          return $item->created_at->format('Y');
+        });
+      $sumE = $yearDataE->sum(function ($item){
+          return $item->sum('amount');
+        });
+      $data['yExp'] = $yearDataE->count() > 0 ? $sumE / $yearDataE->count() : 0;
+
+      $yearDataP = $data['crud']->expenses->where('type', 1)
+        ->groupBy(function (\App\Models\Expense $item) {
+          return $item->created_at->format('Y');
+        });
+      $sumP = $yearDataP->sum(function ($item){
+          return $item->sum('amount');
+        });
+      $data['yProf'] = $yearDataP->count() > 0 ? $sumP / $yearDataP->count() : 0;
 
       $data['expenses'] = $data['crud']->expenses()->orderBy('expensed_at', 'desc')->paginate(15);
       $data['statM'] = $data['crud']->montlyStat(12, $now, $id);
