@@ -24,4 +24,5 @@ Route::group([
         Route::get('periodic/{id}/register', 'PeriodicCrudController@register');
     });
     CRUD::resource('debit', 'DebitCrudController');
+    Route::get('budget', 'BudgetController@dashboard');
 }); // this should be the absolute last line of this file
