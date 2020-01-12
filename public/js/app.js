@@ -1714,8 +1714,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['url'],
   mounted: function mounted() {
     console.log('Component mounted.');
+    axios.get(this.url + '/api/user').then(function (response) {
+      return console.log(response);
+    });
   }
 });
 
@@ -47546,6 +47550,16 @@ if (token) {
   window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+} // Larave auth token
+
+
+var auth = document.head.querySelector('meta[name="api-token"]');
+window.axios.defaults.params = {};
+
+if (token) {
+  window.axios.defaults.params['api_token'] = auth.content;
+} else {
+  console.error('API-Token token not found: https://laravel.com/docs/5.8/api-authentication');
 }
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

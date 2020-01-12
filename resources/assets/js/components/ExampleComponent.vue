@@ -16,8 +16,13 @@
 
 <script>
     export default {
+        props: ['url'],
         mounted() {
             console.log('Component mounted.')
+
+            axios
+                .get(this.url+'/api/user')
+                .then(response => (console.log(response)))
         }
     }
 </script>
