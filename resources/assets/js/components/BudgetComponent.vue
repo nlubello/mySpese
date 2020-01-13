@@ -94,16 +94,15 @@
                     '#F8BC10'
                 ],
                 categories: [],
-                titles: [{
-                    prop: "name",
-                    label: "Nome"
-                }, {
-                    prop: "budget_income",
-                    label: "Budget incasso"
-                }, {
-                    prop: "budget_expense",
-                    label: "Budget spesa"
-                }, ],
+                titles: [
+                    { prop: "name", label: "Nome" }, 
+                    { prop: "exp_last_year", label: "Spesa Precedente" }, 
+                    { prop: "inc_last_year", label: "Incasso Precedente" }, 
+                    { prop: "exp_curr_year", label: "Spesa Attuale" }, 
+                    { prop: "inc_curr_year", label: "Incasso Attuale" }, 
+                    { prop: "budget_income", label: "Budget incasso" }, 
+                    { prop: "budget_expense", label: "Budget spesa" }, 
+                ],
                 filters: [{
                     prop: 'flow_no',
                     value: ''
@@ -158,14 +157,22 @@
                 let totalInc = 0;
                 let vm = this;
                 this.categories.forEach(function (item, index) {
-                    totalExp += parseFloat(item.budget_expense);
-                    totalInc += parseFloat(item.budget_income);
+                    // Convert numbers of JSON
+                    Vue.set(vm.categories[index], 'budget_expense', parseFloat(item.budget_expense));
+                    Vue.set(vm.categories[index], 'budget_income', parseFloat(item.budget_income));
+                    Vue.set(vm.categories[index], 'exp_last_year', parseFloat(item.exp_last_year));
+                    Vue.set(vm.categories[index], 'inc_last_year', parseFloat(item.inc_last_year));
+                    Vue.set(vm.categories[index], 'exp_curr_year', parseFloat(item.exp_curr_year));
+                    Vue.set(vm.categories[index], 'inc_curr_year', parseFloat(item.inc_curr_year));
 
-                    if(parseFloat(item.budget_expense) > 0){
-                        vm.expData.push({ label: item.name, value: parseFloat(item.budget_expense) });
+                    totalExp += item.budget_expense;
+                    totalInc += item.budget_income;
+
+                    if(item.budget_expense > 0){
+                        vm.expData.push({ label: item.name, value: item.budget_expense });
                     }
-                    if(parseFloat(item.budget_income) > 0){
-                        vm.incData.push({ label: item.name, value: parseFloat(item.budget_income) });
+                    if(item.budget_income > 0){
+                        vm.incData.push({ label: item.name, value: item.budget_income });
                     }
                 })
 

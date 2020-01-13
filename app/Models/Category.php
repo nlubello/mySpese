@@ -24,6 +24,7 @@ class Category extends Model
     protected $fillable = ['name', 'icon', 'type', 'budget_income', 'budget_expense'];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $appends = ['exp_last_year', 'inc_last_year', 'exp_curr_year', 'inc_curr_year'];
 
     /*
     |--------------------------------------------------------------------------
@@ -32,6 +33,18 @@ class Category extends Model
     */
     public function htmlIcon(){
       return '<i class="fa '.$this->icon.'" aria-hidden="true"></i>';
+    }
+
+    public function getSumType($type, $year, $month=null){
+      $q = $this->expenses()
+        ->whereYear('expenses.expensed_at', $year)
+        ->where('type', $type);
+
+      if(!is_null($month)){
+        $q->whereMonth('expenses.expensed_at', $date->month);
+      }
+
+      return $q->sum('amount');
     }
 
     public function getSum($date = null){
@@ -245,6 +258,30 @@ class Category extends Model
     | ACCESORS
     |--------------------------------------------------------------------------
     */
+
+    public function getExpLastYearAttribute()
+    {
+        $date = Carbon::now()->subYear();
+        return $this->getSumType(0, $date->year, null);
+    }
+
+    public function getIncLastYearAttribute()
+    {
+        $date = Carbon::now()->subYear();
+        return $this->getSumType(1, $date->year, null);
+    }
+
+    public function getExpCurrYearAttribute()
+    {
+        $date = Carbon::now();
+        return $this->getSumType(0, $date->year, null);
+    }
+
+    public function getIncCurrYearAttribute()
+    {
+        $date = Carbon::now();
+        return $this->getSumType(1, $date->year, null);
+    }
 
     /*
     |--------------------------------------------------------------------------
