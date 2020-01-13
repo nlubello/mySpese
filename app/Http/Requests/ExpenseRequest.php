@@ -26,7 +26,10 @@ class ExpenseRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|min:5|max:255',
+            'amount' => 'required|numeric',
+            'type' => 'required|numeric',
+            'expensed_at' => 'required',
         ];
     }
 

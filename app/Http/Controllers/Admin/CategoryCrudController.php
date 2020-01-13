@@ -191,6 +191,10 @@ class CategoryCrudController extends CrudController
         // $this->crud->orderBy();
         // $this->crud->groupBy();
         // $this->crud->limit();
+
+        // add asterisk for fields that are required in Request
+        //$this->crud->setRequiredFields(StoreRequest::class, 'create');
+        //$this->crud->setRequiredFields(UpdateRequest::class, 'edit');
     }
 
     public function store(StoreRequest $request)

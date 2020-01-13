@@ -26,7 +26,9 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|min:5|max:255',
+            'budget_income' => 'required|numeric',
+            'budget_expense' => 'required|numeric',
         ];
     }
 

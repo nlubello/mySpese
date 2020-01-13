@@ -21,7 +21,7 @@ class Category extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'icon', 'type', 'budget_income', 'budget_expense'];
+    protected $fillable = ['user_id', 'name', 'icon', 'type', 'budget_income', 'budget_expense'];
     // protected $hidden = [];
     // protected $dates = [];
     protected $appends = ['exp_last_year', 'inc_last_year', 'exp_curr_year', 'inc_curr_year',
