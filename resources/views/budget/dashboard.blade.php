@@ -15,9 +15,9 @@
 
 @section('content')
   <div id="app">
-    <example-component
+    <budget-component
       url="{{ url('') }}"
-    ></example-component>
+    ></budget-component>
   </div>
 
 @endsection
