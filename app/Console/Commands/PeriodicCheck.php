@@ -51,12 +51,11 @@ class PeriodicCheck extends Command
 
       foreach ($per as $p) {
 
-        $this->info("Controllo $p->name");
-        $this->info("Prossima scadenza $p->next_period");
+        $this->info("Controllo $p->name | Prossima scadenza $p->next_period");
 
         if((clone $p->next_period)->isToday()){
           $this->info("Creo $p->name");
-          $p->createExpense();
+          $p->createExpense($now);
         } else {
           // Skip
         }
