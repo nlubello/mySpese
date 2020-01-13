@@ -1,15 +1,23 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="box box-default">
-                <div class="box-header">Categorie di spesa/incassi</div>
+            <div class="box box-danger">
+                <div class="box-header">Categorie di spesa</div>
 
                 <div class="box-body">
                     <data-tables :data="categories" :action-col="actionCol" :filters="filters">
-                        <el-table-column type="selection" width="55">
+                        <el-table-column v-for="title in titlesExp" :prop="title.prop" :label="title.label"
+                            :key="title.prop" sortable="custom">
                         </el-table-column>
+                    </data-tables>
+                </div>
+            </div>
+            <div class="box box-success">
+                <div class="box-header">Categorie di incassi</div>
 
-                        <el-table-column v-for="title in titles" :prop="title.prop" :label="title.label"
+                <div class="box-body">
+                    <data-tables :data="categories" :action-col="actionCol" :filters="filters">
+                        <el-table-column v-for="title in titlesInc" :prop="title.prop" :label="title.label"
                             :key="title.prop" sortable="custom">
                         </el-table-column>
                     </data-tables>
@@ -21,7 +29,16 @@
                 <div class="box-header">Budget Totale</div>
 
                 <div class="box-body">
-                    <donut-chart id="donut" :data="totalData" colors='[ "#dd4b39", "#00a65a"]' resize="true"></donut-chart>
+                    <bar-chart id="bar" 
+                        :data="totalData" 
+                        xkey="y" 
+                        ykeys='["inc","exp","bal"]'
+                        labels='["Incassi","Spese","Bilancio"]'
+                        bar-colors='[ "#00a65a", "#dd4b39", "#f0ad4e"]' 
+                        grid="true"
+                        grid-text-weight="bold"
+                        resize="true">
+                    </bar-chart>
                 </div>
             </div>
             <div class="box box-default">
@@ -63,10 +80,8 @@
 
         data: function () {
             return {
-                totalData: [
-                    { label: 'Spese', value: 0 },
-                    { label: 'Incassi', value: 0 },
-                ],
+                year: new Date().getFullYear(),
+                totalData: [],
                 incData: [],
                 incColors: [
                     '#0C9D01',
@@ -94,15 +109,8 @@
                     '#F8BC10'
                 ],
                 categories: [],
-                titles: [
-                    { prop: "name", label: "Nome" }, 
-                    { prop: "exp_last_year", label: "Spesa Precedente" }, 
-                    { prop: "inc_last_year", label: "Incasso Precedente" }, 
-                    { prop: "exp_curr_year", label: "Spesa Attuale" }, 
-                    { prop: "inc_curr_year", label: "Incasso Attuale" }, 
-                    { prop: "budget_income", label: "Budget incasso" }, 
-                    { prop: "budget_expense", label: "Budget spesa" }, 
-                ],
+                titlesInc: [],
+                titlesExp: [],
                 filters: [{
                     prop: 'flow_no',
                     value: ''
@@ -142,6 +150,21 @@
         mounted() {
             console.log('Component mounted.')
 
+            this.titlesInc = [
+                    { prop: "name", label: "Nome" }, 
+                    { prop: "inc_last_year", label: "IN " + (this.year-1) }, 
+                    { prop: "budget_income", label: "IN Budget" }, 
+                    { prop: "inc_curr_year", label: "IN " + this.year + " [€]" },
+                    { prop: "inc_curr_year_perc", label: "IN " + this.year + " [%]" },
+                ];
+            this.titlesExp = [
+                    { prop: "name", label: "Nome" }, 
+                    { prop: "exp_last_year", label: "OUT " + (this.year-1) }, 
+                    { prop: "budget_expense", label: "OUT Budget" }, 
+                    { prop: "exp_curr_year", label: "OUT " + this.year + " [€]" }, 
+                    { prop: "exp_curr_year_perc", label: "OUT " + this.year + " [%]" }, 
+                ];
+
             axios
                 .get(this.url + '/api/categories')
                 .then(response => (this.loadData(response.data)))
@@ -151,10 +174,10 @@
             loadData(data) {
                 this.categories = data;
                 
-                this.expData = [];
-                this.incData = [];
-                let totalExp = 0;
-                let totalInc = 0;
+                this.expData = []; this.incData = [];
+                let totalExp = 0; let totalInc = 0;
+                let prevExp = 0; let prevInc = 0;
+
                 let vm = this;
                 this.categories.forEach(function (item, index) {
                     // Convert numbers of JSON
@@ -167,6 +190,8 @@
 
                     totalExp += item.budget_expense;
                     totalInc += item.budget_income;
+                    prevExp += item.exp_last_year;
+                    prevInc += item.inc_last_year;
 
                     if(item.budget_expense > 0){
                         vm.expData.push({ label: item.name, value: item.budget_expense });
@@ -176,9 +201,11 @@
                     }
                 })
 
+                let year = new Date().getFullYear();
+
                 this.totalData = [
-                    { label: 'Spese', value: totalExp },
-                    { label: 'Incassi', value: totalInc },
+                    { y: year-1, 'exp': prevExp, 'inc': prevInc, 'bal': prevInc-prevExp },
+                    { y: year, 'exp': totalExp, 'inc': totalInc, 'bal': totalInc-totalExp },
                 ]
             
             },

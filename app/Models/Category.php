@@ -24,7 +24,8 @@ class Category extends Model
     protected $fillable = ['name', 'icon', 'type', 'budget_income', 'budget_expense'];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $appends = ['exp_last_year', 'inc_last_year', 'exp_curr_year', 'inc_curr_year'];
+    protected $appends = ['exp_last_year', 'inc_last_year', 'exp_curr_year', 'inc_curr_year',
+      'exp_curr_year_perc', 'inc_curr_year_perc'];
 
     /*
     |--------------------------------------------------------------------------
@@ -281,6 +282,27 @@ class Category extends Model
     {
         $date = Carbon::now();
         return $this->getSumType(1, $date->year, null);
+    }
+
+    public function getExpCurrYearPercAttribute()
+    {
+        $date = Carbon::now();
+        if($this->budget_expense > 0){
+          return round($this->getSumType(0, $date->year, null) / $this->budget_expense * 100, 2);
+        } else {
+          return 0;
+        }
+        
+    }
+
+    public function getIncCurrYearPercAttribute()
+    {
+        $date = Carbon::now();
+        if($this->budget_income > 0){
+          return round($this->getSumType(1, $date->year, null) / $this->budget_income * 100, 2);
+        } else {
+          return 0;
+        }
     }
 
     /*
