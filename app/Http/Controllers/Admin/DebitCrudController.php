@@ -52,7 +52,7 @@ class DebitCrudController extends CrudController
              //'placeholder' => 'Some text when empty',
              //'class' => 'form-control some-class'
             //], // extra HTML attributes and values your input might need
-            //'wrapperAttributes' => [
+            //'wrapper' => [
              //'class' => 'form-group col-md-12'
             //], // extra HTML attributes for the field wrapper - mostly for resizing fields
             //'readonly'=>'readonly',
