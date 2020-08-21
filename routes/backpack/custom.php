@@ -13,16 +13,16 @@ Route::group([
 ], function () { // custom admin routes
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
-    CRUD::resource('expense', 'ExpenseCrudController');
-    CRUD::resource('category', 'CategoryCrudController')->with(function(){
-        // add extra routes to this resource
-        Route::get('category/{id}/show', 'CategoryCrudController@show');
-        Route::get('category/ajax-category-options', 'CategoryCrudController@categoryOptions');
-    });
-    CRUD::resource('periodic', 'PeriodicCrudController')->with(function(){
-        // add extra routes to this resource
-        Route::get('periodic/{id}/register', 'PeriodicCrudController@register');
-    });
-    CRUD::resource('debit', 'DebitCrudController');
+    Route::crud('expense', 'ExpenseCrudController');
+    Route::crud('category', 'CategoryCrudController');
+    // add extra routes to this resource
+    Route::get('category/{id}/show', 'CategoryCrudController@show');
+    Route::get('category/ajax-category-options', 'CategoryCrudController@categoryOptions');
+
+    Route::crud('periodic', 'PeriodicCrudController');
+    // add extra routes to this resource
+    Route::get('periodic/{id}/register', 'PeriodicCrudController@register');
+    
+    Route::crud('debit', 'DebitCrudController');
     Route::get('budget', 'BudgetController@dashboard');
 }); // this should be the absolute last line of this file

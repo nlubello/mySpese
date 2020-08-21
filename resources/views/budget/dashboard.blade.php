@@ -1,17 +1,4 @@
-@extends('backpack::layout')
-
-@section('header')
-    <section class="content-header">
-      <h1>
-        Budget<small>Dashboard per la gestione del budget</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{ backpack_url() }}">{{ config('backpack.base.project_name') }}</a></li>
-        <li class="active">Budget</li>
-      </ol>
-    </section>
-@endsection
-
+@extends(backpack_view('blank'))
 
 @section('content')
   <div id="app">

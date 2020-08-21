@@ -11,7 +11,12 @@ use App\Http\Requests\ExpenseRequest as UpdateRequest;
 
 class ExpenseCrudController extends CrudController
 {
-    public function setup()
+  use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+
+  public function setup()
     {
 
         /*
