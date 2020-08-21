@@ -55,7 +55,7 @@ class DebitCrudController extends CrudController
           [   // Hidden
             'name' => 'user_id',
             'type' => 'hidden',
-            'default' => \Auth::user()->id,
+            'default' => backpack_auth()->user()->id,
           ],
           [   // Date
             'name' => 'due_at',

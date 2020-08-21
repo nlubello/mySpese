@@ -170,7 +170,7 @@ class Category extends Model
       return $htmlIn.$htmlOut;
     }
 
-    public function detailsBtn(){
+    public function detailsBtn($crud){
       $url = backpack_url('category/'.$this->id);
       return "<a class='btn btn-primary btn-xs' href='$url'><i class='fa fa-eye'></i> Dettagli</a>";
     }
@@ -243,12 +243,11 @@ class Category extends Model
         parent::boot();
 
         static::addGlobalScope('user_id', function (Builder $builder) {
-          if (\Auth::check()) {
+          if (backpack_auth()->check()) {
             // The user is logged in...
-            $user = \Auth::user();
+            $user = backpack_auth()->user();
 
-            $builder->whereNull('user_id')->orWhere('user_id', $user->id);
-            //$builder->Where('user_id', $user->id);
+            $builder->where('user_id', $user->id);
           }
 
         });

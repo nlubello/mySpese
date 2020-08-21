@@ -56,7 +56,7 @@ class PeriodicCrudController extends CrudController
           [   // Hidden
             'name' => 'user_id',
             'type' => 'hidden',
-            'default' => \Auth::user()->id,
+            'default' => backpack_auth()->user()->id,
           ],
           [
             'name'        => 'type', // the name of the db column

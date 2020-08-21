@@ -33,8 +33,8 @@ return [
 
     // Date & Datetime Format Syntax: https://github.com/jenssegers/date#usage
     // (same as Carbon)
-    'default_date_format'     => 'd/m/Y',
-    'default_datetime_format' => 'H:i d/m/Y',
+    'default_date_format'     => 'Do MMMM YYYY',
+    'default_datetime_format' => 'Do MMMM YYYY, HH:mm',
 
     /*
     |--------------------------------------------------------------------------
@@ -140,4 +140,18 @@ return [
     */
 
     'license_code' => env('BACKPACK_LICENSE', false),
+
+    // The guard that protects the Backpack admin panel.
+    // If null, the config.auth.defaults.guard value will be used.
+    'guard' => 'backpack',
+
+    // The password reset configuration for Backpack.
+    // If null, the config.auth.defaults.passwords value will be used.
+    'passwords' => 'backpack',
+
+    // Overlays - CSS files that change the look and feel of the admin panel
+    'overlays' => [
+        'vendor/backpack/base/backpack.bold.css',
+        // 'vendor/backpack/base/backpack.content.is.king.css', // opinionized borderless alternative
+    ],
 ];
