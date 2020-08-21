@@ -61,6 +61,8 @@ class PeriodicCheck extends Command
         }
       }
       $this->info("Fine lettura dei periodici - $time");
+
+      return 0;
     }
 
 }
