@@ -1,17 +1,4 @@
-@extends('backpack::layout')
-
-@section('header')
-    <section class="content-header">
-      <h1>
-        {{ trans('backpack::base.dashboard') }}<small>{{ trans('backpack::base.first_page_you_see') }}</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{ backpack_url() }}">{{ config('backpack.base.project_name') }}</a></li>
-        <li class="active">{{ trans('backpack::base.dashboard') }}</li>
-      </ol>
-    </section>
-@endsection
-
+@extends(backpack_view('blank'))
 
 @section('content')
   <div class="row">
@@ -80,17 +67,15 @@
 
     <div class="row">
       <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-aqua">
-          <div class="inner">
-            <h3>{{$out}}<sup style="font-size: 20px">&euro;</sup></h3>
-
-            <p>Spese extra questo mese</p>
+        <div class="card text-white bg-primary">
+          <div class="card-body pb-0">
+            <a href="{{url('/admin/expense/create')}}" class="btn btn-transparent p-0 float-right"><i class="icon-pencil"></i></a>
+            <div class="text-value">{{$out}}<sup style="font-size: 20px">&euro;</sup></div>
+            <div>Spese extra questo mese</div>
           </div>
-          <div class="icon">
-            <i class="ion ion-bag"></i>
-          </div>
-          <a href="{{url('/admin/expense/create')}}" class="small-box-footer">Aggiungi spesa <i class="fa fa-plus-circle"></i></a>
+          <div class="chart-wrapper mt-3 mx-3" style="height:70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <canvas class="chart chartjs-render-monitor" id="card-chart1" height="70" style="display: block;" width="350"></canvas>
+          <div id="card-chart1-tooltip" class="chartjs-tooltip top" style="opacity: 0; left: 191.89px; top: 101.244px;"><div class="tooltip-header"><div class="tooltip-header-item">April</div></div><div class="tooltip-body"><div class="tooltip-body-item"><span class="tooltip-body-item-color" style="background-color: rgba(255, 255, 255, 0.55);"></span><span class="tooltip-body-item-label">My First dataset</span><span class="tooltip-body-item-value">84</span></div></div></div></div>
         </div>
       </div>
       <!-- ./col -->
@@ -384,7 +369,7 @@
 @endsection
 
 @section('after_styles')
-<link rel="stylesheet" href="{{ asset('vendor/adminlte/') }}/bower_components/morris.js/morris.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
 <style>
 tr.clickable:hover{
@@ -396,9 +381,10 @@ tr.clickable:hover{
 @endsection
 
 @section('after_scripts')
-<script src="{{ asset('vendor/adminlte') }}/bower_components/raphael/raphael.min.js"></script>
-<script src="{{ asset('vendor/adminlte') }}/bower_components/morris.js/morris.min.js"></script>
-<script src="{{ asset('vendor/adminlte') }}/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js" integrity="sha512-3PRVLmoBYuBDbCEojg5qdmd9UhkPiyoczSFYjnLhFb2KAFsWWEMlAPt0olX1Nv7zGhDfhGEVkXsu51a55nlYmw==" crossorigin="anonymous"></script>
 
 <script>
 $( document ).ready(function() {

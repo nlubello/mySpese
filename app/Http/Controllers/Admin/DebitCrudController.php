@@ -10,7 +10,12 @@ use App\Http\Requests\DebitRequest as UpdateRequest;
 
 class DebitCrudController extends CrudController
 {
-    public function setup()
+  use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+
+  public function setup()
     {
 
         /*
@@ -55,7 +60,7 @@ class DebitCrudController extends CrudController
           [   // Hidden
             'name' => 'user_id',
             'type' => 'hidden',
-            'default' => \Auth::user()->id,
+            'default' => backpack_auth()->user()->id,
           ],
           [   // Date
             'name' => 'due_at',

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -211,9 +211,9 @@ class Expense extends Model
         parent::boot();
 
         static::addGlobalScope('user_id', function (Builder $builder) {
-          if (\Auth::check()) {
+          if (backpack_auth()->check()) {
             // The user is logged in...
-            $user = \Auth::user();
+            $user = backpack_auth()->user();
 
             $builder->where('user_id', $user->id);
           }
