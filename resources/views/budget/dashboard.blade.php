@@ -12,7 +12,7 @@
 @section('before_styles')
 <meta name="api-token" content="{{ backpack_auth()->user()->api_token }}" />
 
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<!--link rel="stylesheet" href="{{ asset('css/app.css') }}"-->
 
 <style>
 </style>

@@ -1,10 +1,10 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="box box-danger">
-                <div class="box-header">Categorie di spesa</div>
+            <div class="card card-accent-danger">
+                <div class="card-header">Categorie di spesa</div>
 
-                <div class="box-body">
+                <div class="card-body">
                     <data-tables :data="categories" :action-col="actionCol" :filters="filters">
                         <el-table-column v-for="title in titlesExp" :prop="title.prop" :label="title.label"
                             :key="title.prop" sortable="custom">
@@ -12,10 +12,10 @@
                     </data-tables>
                 </div>
             </div>
-            <div class="box box-success">
-                <div class="box-header">Categorie di incassi</div>
+            <div class="card card-accent-success">
+                <div class="card-header">Categorie di incassi</div>
 
-                <div class="box-body">
+                <div class="card-body">
                     <data-tables :data="categories" :action-col="actionCol" :filters="filters">
                         <el-table-column v-for="title in titlesInc" :prop="title.prop" :label="title.label"
                             :key="title.prop" sortable="custom">
@@ -25,10 +25,10 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="box box-default">
-                <div class="box-header">Budget Totale</div>
+            <div class="card card-accent-default">
+                <div class="card-header">Budget Totale</div>
 
-                <div class="box-body">
+                <div class="card-body">
                     <bar-chart id="bar" 
                         :data="totalData" 
                         xkey="y" 
@@ -41,17 +41,17 @@
                     </bar-chart>
                 </div>
             </div>
-            <div class="box box-default">
-                <div class="box-header">Budget Spese</div>
+            <div class="card card-accent-default">
+                <div class="card-header">Budget Spese</div>
 
-                <div class="box-body">
+                <div class="card-body">
                     <donut-chart id="expDonut" :data="expData" :colors='expColors' resize="true"></donut-chart>
                 </div>
             </div>
-            <div class="box box-default">
-                <div class="box-header">Budget Incassi</div>
+            <div class="card card-accent-default">
+                <div class="card-header">Budget Incassi</div>
 
-                <div class="box-body">
+                <div class="card-body">
                     <donut-chart id="incDonut" :data="incData" :colors='incColors' resize="true"></donut-chart>
                 </div>
             </div>
