@@ -8,14 +8,11 @@
 <li class='nav-item'><a class='nav-link' href="{{ backpack_url('backup') }}"><i class="nav-icon fa fa-hdd-o"></i> <span>Backups</span></a></li>
 <li class='nav-item'><a class='nav-link' href="{{ backpack_url('elfinder') }}"><i class="nav-icon fa fa-files-o"></i> <span>File Manager</span></a></li>
 <!-- Users, Roles Permissions -->
-  <li class="nav-item nav-dropdown">
-    <a class='nav-link nav-dropdown-toggle' href="#"><i class="nav-icon fa fa-group"></i> <span>Utenti, Ruoli, Permessi</span></a>
-    <ul class="nav-dropdown-items">
-      <li class='nav-item'><a class='nav-link' href="{{ url(config('backpack.base.route_prefix', 'admin') . '/user') }}"><i class="nav-icon fa fa-user"></i> <span>Utenti</span></a></li>
-      <li class='nav-item'><a class='nav-link' href="{{ url(config('backpack.base.route_prefix', 'admin') . '/role') }}"><i class="nav-icon fa fa-group"></i> <span>Ruoli</span></a></li>
-      <li class='nav-item'><a class='nav-link' href="{{ url(config('backpack.base.route_prefix', 'admin') . '/permission') }}"><i class="nav-icon fa fa-key"></i> <span>Permessi</span></a></li>
-    </ul>
-  </li>
-
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('elfinder') }}"><i class="nav-icon fa fa-files-o"></i> <span>{{ trans('backpack::crud.file_manager') }}</span></a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('elfinder') }}\"><i class="nav-icon la la-files-o"></i> <span>{{ trans('backpack::crud.file_manager') }}</span></a></li>
+<li class="nav-item nav-dropdown">
+  <a class='nav-link nav-dropdown-toggle' href="#"><i class="nav-icon fa fa-group"></i> <span>Credenziali</span></a>
+  <ul class="nav-dropdown-items">
+    <li class='nav-item'><a class='nav-link' href="{{ url(config('backpack.base.route_prefix', 'admin') . '/user') }}"><i class="nav-icon fa fa-user"></i> <span>Utenti</span></a></li>
+    <li class='nav-item'><a class='nav-link' href="{{ url(config('backpack.base.route_prefix', 'admin') . '/role') }}"><i class="nav-icon fa fa-group"></i> <span>Ruoli</span></a></li>
+    <li class='nav-item'><a class='nav-link' href="{{ url(config('backpack.base.route_prefix', 'admin') . '/permission') }}"><i class="nav-icon fa fa-key"></i> <span>Permessi</span></a></li>
+  </ul>
+</li>
