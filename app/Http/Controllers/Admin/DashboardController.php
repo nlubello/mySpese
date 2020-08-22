@@ -22,9 +22,48 @@ class DashboardController extends Controller
       $now = Carbon::parse($request->input('date', Carbon::now()->toDateString()));
 
       $data['now'] = $now;
+      $end = (clone $now)->subDays(30);
+      $periodics = Periodic::whereNull('ending_at')
+        ->orWhere('ending_at', '>', $now->toDateString())->get();
+      $data['periodics'] = $periodics->sortBy('next_period')->take(10);
+      $data['expPeriodics'] = $periodics->where('prev_period', '!=', NULL)->sortByDesc('prev_period')->take(5);
+
+
       $data['out'] = Expense::montlyExpenses($now);
       $data['in'] = Expense::montlyGain($now);
+      $data['rem'] = round($periodics->sum('yearly-balance') / 12.0);
+      $data['bal'] = $data['rem'] - $data['out'] + $data['in'];
 
+      \Widget::add()->to('before_content')->type('div')->class('row')->content([
+        \Widget::make()
+          ->type('progress')
+          ->class('card border-0 text-white bg-danger')
+          ->progressClass('progress-bar')
+          ->value($data['out'].' €')
+          ->description('Spese extra')
+          ->progress(100*(int)$data['out']/(int)$data['rem']),
+        \Widget::make()
+          ->type('progress')
+          ->class('card border-0 text-white bg-success')
+          ->progressClass('progress-bar')
+          ->value($data['in'].' €')
+          ->description('Guadagni extra')
+          ->progress(100*(int)$data['in']/(int)$data['rem']),
+        \Widget::make()
+          ->type('progress')
+          ->class('card border-0 text-white bg-warning')
+          ->progressClass('progress-bar')
+          ->value($data['bal'].' €')
+          ->description('Rimanente')
+          ->progress(100*(int)$data['rem']/(int)$data['bal']),
+        \Widget::make()
+          ->type('progress')
+          ->class('card border-0 text-white bg-primary')
+          ->progressClass('progress-bar')
+          ->value($data['rem'].' €')
+          ->description('Budget mensile')
+          ->progress(75),
+      ]);
 
       $data['mov'] = Expense::orderBy('expensed_at', 'desc')
         ->whereMonth('expensed_at', $now->month)
@@ -57,16 +96,11 @@ class DashboardController extends Controller
       }
       
 
-      $end = (clone $now)->subDays(30);
-      $periods = Periodic::whereNull('ending_at')
-        ->orWhere('ending_at', '>', $now->toDateString())->get();
-      $data['periodics'] = $periods->sortBy('next_period')->take(10);
-      $data['expPeriodics'] = $periods->where('prev_period', '!=', NULL)->sortByDesc('prev_period')->take(5);
+      
 
       //\Debugbar::info((clone $data['periodics'][0]->next_period)->isToday());
 
-      $data['rem'] = round($periods->sum('yearly-balance') / 12.0);
-      $data['bal'] = $data['rem'] - $data['out'] + $data['in'];
+      
 
       $data['debits'] = Debit::paginate(10, ['*'], 'debits');
 

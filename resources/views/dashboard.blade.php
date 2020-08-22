@@ -1,7 +1,7 @@
 @extends(backpack_view('blank'))
 
 @section('content')
-  <div class="row">
+  <div class="row d-none">
     <div class="col-xs-12 text-center">
       <nav aria-label="Month pagination">
         @php
@@ -66,174 +66,15 @@
   </div>
 
     <div class="row">
-      <div class="col-lg-3 col-xs-6">
-        <div class="card text-white bg-primary">
-          <div class="card-body pb-0">
-            <a href="{{url('/admin/expense/create')}}" class="btn btn-transparent p-0 float-right"><i class="icon-pencil"></i></a>
-            <div class="text-value">{{$out}}<sup style="font-size: 20px">&euro;</sup></div>
-            <div>Spese extra questo mese</div>
-          </div>
-          <div class="chart-wrapper mt-3 mx-3" style="height:70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <canvas class="chart chartjs-render-monitor" id="card-chart1" height="70" style="display: block;" width="350"></canvas>
-          <div id="card-chart1-tooltip" class="chartjs-tooltip top" style="opacity: 0; left: 191.89px; top: 101.244px;"><div class="tooltip-header"><div class="tooltip-header-item">April</div></div><div class="tooltip-body"><div class="tooltip-body-item"><span class="tooltip-body-item-color" style="background-color: rgba(255, 255, 255, 0.55);"></span><span class="tooltip-body-item-label">My First dataset</span><span class="tooltip-body-item-value">84</span></div></div></div></div>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-green">
-          <div class="inner">
-            <h3>{{$in}}<sup style="font-size: 20px">&euro;</sup></h3>
-
-            <p>Guadagni extra del mese</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-stats-bars"></i>
-          </div>
-          <a href="{{url('/admin/expense/create')}}" class="small-box-footer">Aggiungi introito <i class="fa fa-plus-circle"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-yellow">
-          <div class="inner">
-            <h3>{{$bal}}<sup style="font-size: 20px">&euro;</sup></h3>
-
-            <p>Bilancio mensile</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-cash"></i>
-          </div>
-          <a href="#line-30" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-          <div class="inner">
-            <h3>{{$rem}}<sup style="font-size: 20px">&euro;</sup></h3>
-
-            <p>Budget questo mese</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-arrow-graph-up-right"></i>
-          </div>
-          <a href="#line-30" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-4 col-xs-12">
-            <div class="box box-default">
-              <div class="box-header with-border">
-                  <div class="box-title">Le ultime movimentazioni</div>
-              </div>
-
-              <div class="box-body no-padding">
-                <table class="table">
-                  <tbody>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Data</th>
-                    <th style="width: 50px">Importo</th>
-                    <th>Azioni</th>
-                  </tr>
-                  @foreach($mov as $m)
-                  <tr class="clickable" data-href="{{backpack_url('expense') . '/' . $m->id . '/edit' }}">
-                    <td>{{$m->name}}</td>
-                    <td>{{Date::parse($m->expensed_at)->format(config('backpack.base.default_date_format'))}}</td>
-                    <td>
-                      @if($m->type == 0)
-                      <span class="badge bg-red">
-                      @elseif($m->type == 1)
-                      <span class="badge bg-green">
-                      @endif
-                      {{$m->amount}} &euro;</span></td>
-                      <td>
-                        <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="fa fa-edit"></i></a>
-                      </td>
-                  </tr>
-                  @endforeach
-                  
-                </tbody>
-                <tfoot>
-                  
-                </tfoot>
-              </table>
-              {{ $mov->links() }}
+        <div class="col-lg-4 col-md-6 col-xs-12">
+          <div class="card card-accent-primary mb-2">
+            <div class="card-header">
+              Entrate e uscite da registrare
+              <a href="{{url('/admin/expense/create')}}" class="btn btn-ghost-primary p-0 float-right" type="button"><i class="las la-plus"></i> Nuova</a>
             </div>
-          </div>
-        </div>
 
-        <div class="col-md-4 col-xs-12">
-            <div class="box box-warning">
-                <div class="box-header with-border">
-                    <div class="box-title">Categorie di spesa</div>
-                </div>
-
-                <div class="box-body no-padding">
-                  <table class="table">
-                    <tbody>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Nome</th>
-                      <th style="width: 80px">Importo</th>
-                      <th style="width: 80px">Andamento</th>
-                    </tr>
-                    @foreach($catin as $c)
-                    <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
-                      <td>{!!$c->htmlIcon()!!}</td>
-                      <td>{{$c->name}}</td>
-                      <td><span class="badge bg-red">
-                        {{$c->sum}} &euro;</span></td>
-                      <td>{!!$c->getPrevMonthsDifferenceHTML($now)!!}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-                </div>
-            </div>
-            <div class="box box-success">
-                <div class="box-header with-border">
-                    <div class="box-title">Categorie di incassi</div>
-                </div>
-
-                <div class="box-body no-padding">
-                  <table class="table">
-                    <tbody>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Nome</th>
-                      <th style="width: 80px">Importo</th>
-                      <th style="width: 80px">Andamento</th>
-                    </tr>
-                    @foreach($catout as $c)
-                    <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
-                      <td>{!!$c->htmlIcon()!!}</td>
-                      <td>{{$c->name}}</td>
-                      <td><span class="badge bg-green">
-                        {{$c->sum}} &euro;</span></td>
-                      <td>{!!$c->getPrevMonthsDifferenceHTML($now)!!}</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-xs-12">
-            <div class="box box-default">
-              <div class="box-header with-border">
-                  <div class="box-title">Entrate e uscite da registrare</div>
-              </div>
-
-              <div class="box-body no-padding">
+            <div class="card-body p-0">
+              <div class="table-responsive">
                 <table class="table">
                   <tbody>
                   <tr>
@@ -245,10 +86,10 @@
                   @foreach($expPeriodics as $p)
                   <tr>
                     <td>{{$p->name}}</td>
-                    <td class="text-danger">{{Date::parse($p->prev_period)->format(config('backpack.base.default_date_format'))}}</td>
+                    <td class="text-danger">{{Date::parse($p->prev_period)->format('d/m/yy')}}</td>
                     <td>
                       @if($p->type == 0)
-                      <span class="badge bg-red">
+                      <span class="badge bg-red text-light">
                       @elseif($p->type == 1)
                       <span class="badge bg-green">
                       @endif
@@ -258,23 +99,134 @@
                             $e = $p->getExpense();
                         @endphp
                         @if(is_null($e))
-                          <a class="btn btn-xs btn-success" href="{{backpack_url('periodic').'/'.$p->id.'/register'}}"><i class="fa fa-plus-circle" aria-hidden="true"></i> Registra</a>
+                          <a class="btn btn-sm btn-success" href="{{backpack_url('periodic').'/'.$p->id.'/register'}}"><i class="fa fa-plus-circle" aria-hidden="true"></i> Registra</a>
                         @else
-                          <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$p->id.'/edit'}}"><i class="fa fa-edit"></i> Modifica</a>
+                          <a class="btn btn-sm btn-default" href="{{backpack_url('expense').'/'.$p->id.'/edit'}}"><i class="fa fa-edit"></i> Modifica</a>
                         @endif
                       </td>
                   </tr>
                   @endforeach
-                </tbody>
-              </table>
+                  @if(count($expPeriodics)==0)
+                  <tr><td colspan="4" class="text-center">Nessun movimento da registrare</td></tr>
+                  @endif
+                  </tbody>
+                </table>
+              </div>
             </div>
-            </div>
-            <div class="box box-default">
-              <div class="box-header with-border">
-                  <div class="box-title">Le prossime entrate e uscite</div>
+          </div>
+            <div class="card card-accent-primary mb-2">
+              <div class="card-header">
+                Le ultime movimentazioni
               </div>
 
-              <div class="box-body no-padding">
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Data</th>
+                      <th style="width: 50px">Importo</th>
+                      <th>Azioni</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($mov as $m)
+                  <tr class="clickable" data-href="{{backpack_url('expense') . '/' . $m->id . '/edit' }}">
+                    <td>{{$m->name}}</td>
+                    <td>{{Date::parse($m->expensed_at)->format('d/m/yy')}}</td>
+                    <td>
+                      @if($m->type == 0)
+                      <span class="badge bg-red text-light">
+                      @elseif($m->type == 1)
+                      <span class="badge bg-green">
+                      @endif
+                      {{$m->amount}} &euro;</span></td>
+                      <td>
+                        <a class="btn btn-sm btn-default" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="fa fa-edit"></i></a>
+                      </td>
+                  </tr>
+                  @endforeach
+                  @if(count($mov)==0)
+                  <tr><td colspan="4" class="text-center">Nessun movimento</td></tr>
+                  @endif
+                  </tbody>
+                </table>
+                </div>
+              {{ $mov->links() }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-xs-12">
+            <div class="card card-accent-warning mb-2">
+              <div class="card-header">Categorie di spesa</div>
+
+              <div class="card-body p-0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Nome</th>
+                      <th style="width: 80px">Importo</th>
+                      <th style="width: 80px">Andamento</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($catin as $c)
+                  <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
+                    <td>{!!$c->htmlIcon()!!}</td>
+                    <td>{{$c->name}}</td>
+                    <td><span class="badge bg-red text-light">
+                      {{$c->sum}} &euro;</span></td>
+                    <td>{!!$c->getPrevMonthsDifferenceHTML($now)!!}</td>
+                  </tr>
+                  @endforeach
+                  @if(count($catin)==0)
+                  <tr><td colspan="4" class="text-center">Nessuna categoria</td></tr>
+                  @endif
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card card-accent-success mb-2">
+              <div class="card-header">Categorie di incassi</div>
+
+              <div class="card-body p-0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Nome</th>
+                      <th style="width: 80px">Importo</th>
+                      <th style="width: 80px">Andamento</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($catout as $c)
+                  <tr class="clickable" data-href="{{backpack_url('category') . '/' . $c->id . '/show' }}">
+                    <td>{!!$c->htmlIcon()!!}</td>
+                    <td>{{$c->name}}</td>
+                    <td><span class="badge bg-green">
+                      {{$c->sum}} &euro;</span></td>
+                    <td>{!!$c->getPrevMonthsDifferenceHTML($now)!!}</td>
+                  </tr>
+                  @endforeach
+                  @if(count($catout)==0)
+                  <tr><td colspan="4" class="text-center">Nessuna categoria</td></tr>
+                  @endif
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-xs-12">
+            
+            <div class="card card-accent-primary mb-2">
+              <div class="card-header">Le prossime entrate e uscite</div>
+
+              <div class="card-body p-0">
                 <table class="table">
                   <tbody>
                   <tr>
@@ -285,10 +237,10 @@
                   @foreach($periodics as $p)
                   <tr>
                     <td>{{$p->name}}</td>
-                    <td>{{Date::parse($p->next_period)->format(config('backpack.base.default_date_format'))}}</td>
+                    <td>{{Date::parse($p->next_period)->format('d/m/yy')}}</td>
                     <td>
                       @if($p->type == 0)
-                      <span class="badge bg-red">
+                      <span class="badge bg-red text-light">
                       @elseif($p->type == 1)
                       <span class="badge bg-green">
                       @endif
@@ -300,12 +252,10 @@
             </div>
           </div>
 
-          <div class="box box-danger">
-            <div class="box-header with-border">
-                <div class="box-title">I debiti o crediti attivi</div>
-            </div>
+          <div class="card card-accent-danger mb-2">
+            <div class="card-header">I debiti o crediti attivi</div>
 
-            <div class="box-body no-padding">
+            <div class="card-body p-0">
               <table class="table">
                 <tbody>
                 <tr>
@@ -316,10 +266,10 @@
                 @foreach($debits as $d)
                 <tr>
                   <td>{{$d->name}}</td>
-                  <td>{{Date::parse($d->due_at)->format(config('backpack.base.default_date_format'))}}</td>
+                  <td>{{Date::parse($d->due_at)->format('d/m/yy')}}</td>
                   <td>
                     @if($d->amount < 0)
-                    <span class="badge bg-red">
+                    <span class="badge bg-red text-light">
                     @else
                     <span class="badge bg-green">
                     @endif
