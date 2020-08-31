@@ -172,7 +172,7 @@ class Category extends Model
 
     public function detailsBtn($crud){
       $url = backpack_url('category/'.$this->id);
-      return "<a class='btn btn-primary btn-xs' href='$url'><i class='fa fa-eye'></i> Dettagli</a>";
+      return "<a class='btn btn-primary btn-sm' href='$url'><i class='fa fa-eye'></i> Dettagli</a>";
     }
 
     public function getTotalExpense(){
