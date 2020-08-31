@@ -41,21 +41,21 @@ class DashboardController extends Controller
           ->progressClass('progress-bar')
           ->value($data['out'].' €')
           ->description('Spese extra')
-          ->progress(100*(int)$data['out']/(int)$data['rem']),
+          ->progress(100*(int)$data['out']/max((int)$data['rem'], 1)),
         \Widget::make()
           ->type('progress')
           ->class('card border-0 text-white bg-success')
           ->progressClass('progress-bar')
           ->value($data['in'].' €')
           ->description('Guadagni extra')
-          ->progress(100*(int)$data['in']/(int)$data['rem']),
+          ->progress(100*(int)$data['in']/max((int)$data['rem'], 1)),
         \Widget::make()
           ->type('progress')
           ->class('card border-0 text-white bg-warning')
           ->progressClass('progress-bar')
           ->value($data['bal'].' €')
           ->description('Rimanente')
-          ->progress(100*(int)$data['rem']/(int)$data['bal']),
+          ->progress(100*(int)$data['rem']/max((int)$data['bal'], 1)),
         \Widget::make()
           ->type('progress')
           ->class('card border-0 text-white bg-primary')
