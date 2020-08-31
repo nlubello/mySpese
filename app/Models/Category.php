@@ -33,7 +33,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     */
     public function htmlIcon(){
-      return '<i class="fa '.$this->icon.'" aria-hidden="true"></i>';
+      return '<i class="'.$this->icon.'" aria-hidden="true"></i>';
     }
 
     public function getSumType($type, $year, $month=null){
