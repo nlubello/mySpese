@@ -25,4 +25,5 @@ Route::group([
     
     Route::crud('debit', 'DebitCrudController');
     Route::get('budget', 'BudgetController@dashboard');
+    Route::get('charts/daily-expenses', 'Charts\DailyExpensesChartController@response')->name('charts.daily-expenses.index');
 }); // this should be the absolute last line of this file

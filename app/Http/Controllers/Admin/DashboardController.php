@@ -65,6 +65,22 @@ class DashboardController extends Controller
           ->progress(75),
       ]);
 
+      \Widget::add()->to('after_content')->type('div')->class('row')->content([
+        \Widget::make([ 
+          'type'       => 'chart',
+          'controller' => \App\Http\Controllers\Admin\Charts\DailyExpensesChartController::class,
+
+          // OPTIONALS
+
+          'class'   => 'card mb-2',
+          'wrapper' => ['class'=> 'col-12'] ,
+          'content' => [
+              'header' => 'Statistiche ultimi 30 gg', 
+              //'body'   => 'This chart should make it obvious how many new users have signed up in the past 7 days.<br><br>',
+          ],
+        ]),
+      ]);
+
       $data['mov'] = Expense::orderBy('expensed_at', 'desc')
         ->whereMonth('expensed_at', $now->month)
         ->whereYear('expensed_at', $now->year)
