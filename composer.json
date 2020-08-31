@@ -17,6 +17,7 @@
         "laravel/framework": "^7.0",
         "laravel/helpers": "^1.1",
         "laravel/tinker": "^2.0",
+        "silviolleite/laravelpwa": "^2.0",
         "tremby/laravel-git-version": "^1.1"
     },
     "require-dev": {
