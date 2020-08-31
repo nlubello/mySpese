@@ -1,17 +1,4 @@
-@extends('backpack::layout')
-
-@section('header')
-    <section class="content-header">
-      <h1>
-        {{ $crud->name }} <small>categoria</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{ backpack_url() }}">{{ config('backpack.base.project_name') }}</a></li>
-        <li><a href="{{ backpack_url('category') }}">Categorie</a></li>
-        <li class="active">{{ $crud->name }}</li>
-      </ol>
-    </section>
-@endsection
+@extends(backpack_view('blank'))
 
 
 @section('content')
@@ -23,18 +10,17 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <div class="box">
-      <div class="box-header with-border">
-        <h3 class="box-title">Report della categoria</h3>
+    <div class="card">
+      <div class="card-header">
+        <h3>Report della categoria {{ $crud->name }}
 
-        <div class="box-tools pull-right">
-          <a class="btn btn-box-tool" href="{{backpack_url('category').'/'.$crud->id.'/edit'}}">
+          <a class="btn btn-ghost-primary p-1 float-right" href="{{backpack_url('category').'/'.$crud->id.'/edit'}}">
             <i class="fa fa-edit"></i>
           </a>
-        </div>
+        </h3>
       </div>
-      <!-- /.box-header -->
-      <div class="box-body">
+      <!-- /.card-header -->
+      <div class="card-body">
         <div class="row">
           <div class="col-sm-3 col-xs-6">
             <div class="description-block border-right">
@@ -183,19 +169,19 @@
         </div>
         <!-- /.row -->
       </div>
-      <!-- /.box-footer -->
+      <!-- /.card-footer -->
     </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-lg-4 col-xs-12">
-    <div class="box box-default">
-      <div class="box-header with-border">
-          <div class="box-title">Le movimentazioni</div>
+    <div class="card card-default">
+      <div class="card-header with-border">
+          <div class="card-title">Le movimentazioni</div>
       </div>
 
-      <div class="box-body no-padding">
+      <div class="card-body no-padding">
         <table class="table">
           <tbody>
           <tr>
@@ -207,7 +193,7 @@
           @foreach($expenses as $m)
           <tr class="clickable" data-href="{{backpack_url('expense') . '/' . $m->id . '/edit' }}">
             <td>{{$m->name}}</td>
-            <td>{{Date::parse($m->expensed_at)->format(config('backpack.base.default_date_format'))}}</td>
+            <td>{{Date::parse($m->expensed_at)->format('d/m/yy')}}</td>
             <td>
               @if($m->type == 0)
               <span class="badge bg-red">
@@ -216,7 +202,7 @@
               @endif
               {{$m->amount}} &euro;</span></td>
             <td>
-              <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="fa fa-edit"></i> Modifica</a>
+              <a class="btn btn-xs btn-default" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="fa fa-edit"></i></a>
             </td>
           </tr>
           @endforeach
@@ -227,19 +213,19 @@
     </div>
   </div>
   <div class="col-lg-8 col-xs-12">
-    <div class="box box-default">
-        <div class="box-header with-border">
-            <div class="box-title">Statistiche ultimi 12 mesi</div>
+    <div class="card card-default">
+        <div class="card-header with-border">
+            <div class="card-title">Statistiche ultimi 12 mesi</div>
         </div>
 
-        <div class="box-body"><div id="line-m"></div></div>
+        <div class="card-body"><div id="line-m"></div></div>
     </div>
-    <div class="box box-default">
-        <div class="box-header with-border">
-            <div class="box-title">Statistiche ultimi anni</div>
+    <div class="card card-default">
+        <div class="card-header with-border">
+            <div class="card-title">Statistiche ultimi anni</div>
         </div>
 
-        <div class="box-body"><div id="line-y"></div></div>
+        <div class="card-body"><div id="line-y"></div></div>
     </div>
   </div>
 </div>
