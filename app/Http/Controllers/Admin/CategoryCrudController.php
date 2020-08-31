@@ -102,6 +102,7 @@ class CategoryCrudController extends CrudController
              'label' => "Icona", // Table column heading
              'type' => "model_function",
              'function_name' => 'htmlIcon', // the method in your Model
+             'limit' => 100, // Limit the number of characters shown
           ],
           [
              'name' => 'name', // The db column name
@@ -116,6 +117,7 @@ class CategoryCrudController extends CrudController
             'label' => "Spese totali", // Table column heading
             'type' => "model_function",
             'function_name' => 'getTotalExpense', // the method in your Model
+            'limit' => 100, // Limit the number of characters shown
           ],
           [
            // run a function on the CRUD model and show its return value
@@ -123,6 +125,7 @@ class CategoryCrudController extends CrudController
            'label' => "Guadagni totali", // Table column heading
            'type' => "model_function",
            'function_name' => 'getTotalProfit', // the method in your Model
+           'limit' => 100, // Limit the number of characters shown
           ],
           [
             // run a function on the CRUD model and show its return value
@@ -130,6 +133,7 @@ class CategoryCrudController extends CrudController
             'label' => "Spesa media mensile", // Table column heading
             'type' => "model_function",
             'function_name' => 'getAvgExpense', // the method in your Model
+            'limit' => 100, // Limit the number of characters shown
           ],
           [
             // run a function on the CRUD model and show its return value
@@ -137,6 +141,7 @@ class CategoryCrudController extends CrudController
             'label' => "Profitti medi mensili", // Table column heading
             'type' => "model_function",
             'function_name' => 'getAvgProfit', // the method in your Model
+            'limit' => 100, // Limit the number of characters shown
           ],
         ];
         $this->crud->addColumns($array_of_arrays); // add multiple columns, at the end of the stack

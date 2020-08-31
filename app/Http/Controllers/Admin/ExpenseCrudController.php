@@ -182,6 +182,7 @@ class ExpenseCrudController extends CrudController
             'label' => "Tipo", // Table column heading
             'type' => "model_function",
             'function_name' => 'htmlType', // the method in your Model
+            'limit' => 100, // Limit the number of characters shown
         ],
       ];
       $this->crud->addColumns($array_of_arrays); // add multiple columns, at the end of the stack
