@@ -286,23 +286,23 @@
 
     <div class="row">
       <div class="col-md-12">
-          <div class="box box-default">
-              <div class="box-header with-border">
-                  <div class="box-title">Statistiche ultimi 30 gg</div>
+          <div class="card card-default">
+              <div class="card-header with-border">
+                  <div class="card-title">Statistiche ultimi 30 gg</div>
               </div>
 
-              <div class="box-body"><div id="line-30"></div></div>
+              <div class="card-body"><div id="line-30"></div></div>
           </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="box box-default">
-            <div class="box-header with-border">
-                <div class="box-title">Statistiche ultimi 12 mesi</div>
+        <div class="card card-default">
+            <div class="card-header with-border">
+                <div class="card-title">Statistiche ultimi 12 mesi</div>
             </div>
 
-            <div class="box-body">
+            <div class="card-body">
               <div class="col-md-6 col-xs-12">
                 <div id="line-yr"></div>
               </div>
