@@ -70,7 +70,7 @@
           <div class="card card-accent-primary mb-2">
             <div class="card-header">
               Entrate e uscite da registrare
-              <a href="{{url('/admin/expense/create')}}" class="btn btn-ghost-primary p-0 float-right" type="button"><i class="las la-plus"></i> Nuova</a>
+              <a href="{{url('/admin/expense/create')}}" class="btn btn-ghost-primary p-1 float-right" type="button"><i class="las la-plus"></i> Nuova</a>
             </div>
 
             <div class="card-body p-0">
@@ -99,9 +99,9 @@
                             $e = $p->getExpense();
                         @endphp
                         @if(is_null($e))
-                          <a class="btn btn-sm btn-success" href="{{backpack_url('periodic').'/'.$p->id.'/register'}}"><i class="fa fa-plus-circle" aria-hidden="true"></i> Registra</a>
+                          <a class="btn btn-sm btn-success" href="{{backpack_url('periodic').'/'.$p->id.'/register'}}"><i class="las la-plus-circle" aria-hidden="true"></i></a>
                         @else
-                          <a class="btn btn-sm btn-default" href="{{backpack_url('expense').'/'.$p->id.'/edit'}}"><i class="fa fa-edit"></i> Modifica</a>
+                          <a class="btn btn-sm btn-primary" href="{{backpack_url('expense').'/'.$p->id.'/edit'}}"><i class="las la-edit"></i></a>
                         @endif
                       </td>
                   </tr>
@@ -143,7 +143,7 @@
                       @endif
                       {{$m->amount}} &euro;</span></td>
                       <td>
-                        <a class="btn btn-sm btn-default" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-primary" href="{{backpack_url('expense').'/'.$m->id.'/edit'}}"><i class="las la-edit"></i></a>
                       </td>
                   </tr>
                   @endforeach
