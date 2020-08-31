@@ -15,6 +15,8 @@ class PeriodicCrudController extends CrudController
   use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
   use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
   use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
+  use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 
   public function setup()
     {
@@ -92,20 +94,20 @@ class PeriodicCrudController extends CrudController
             'label' => 'Data di inzio ricorrenza',
             'type' => 'date_picker',
             // optional:
-            'datetime_picker_options' => [
-                'format' => 'DD/MM/YYYY',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format' => 'dd/mm/yyyy',
                 'language' => 'it'
             ],
             'allows_null' => false,
           ],
-
           [   // Date
             'name' => 'ending_at',
             'label' => 'Data di fine ricorrenza',
             'type' => 'date_picker',
             // optional:
-            'datetime_picker_options' => [
-                'format' => 'DD/MM/YYYY',
+            'date_picker_options' => [
+                'format' => 'dd/mm/yyyy',
                 'language' => 'it'
             ],
             'allows_null' => true,
@@ -119,16 +121,18 @@ class PeriodicCrudController extends CrudController
             'prefix' => "€",
             // 'suffix' => ".00",
           ],
-          [       // Select2Multiple = n-n relationship (with pivot table)
+          [ // relationship
             'label' => "Categorie",
-            'type' => 'select2_multiple',
+            'type' => 'relationship',
             'name' => 'categories', // the method that defines the relationship in your Model
-            'entity' => 'categories', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\Category", // foreign key model
-            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+            //'entity' => 'categories', // the method that defines the relationship in your Model
+            //'attribute' => 'name', // foreign key attribute that is shown to user
+            //'model' => "App\Models\Category", // foreign key model
+            'ajax' => false,
+            //'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
             // 'select_all' => true, // show Select All and Clear buttons?
-          ]
+            'inline_create' => [ 'entity' => 'category' ] // you need to specify the entity in singular
+          ],
         ];
         $this->crud->addFields($array_of_arrays, 'update/create/both');
         // $this->crud->removeField('name', 'update/create/both');
@@ -162,14 +166,17 @@ class PeriodicCrudController extends CrudController
              'label' => "Data di fine", // Table column heading
              'type' => "date"
           ],
-          [
-             // n-n relationship (with pivot table)
-             'label' => "Categorie", // Table column heading
-             'type' => "select_multiple",
-             'name' => 'categories', // the method that defines the relationship in your Model
-             'entity' => 'categories', // the method that defines the relationship in your Model
-             'attribute' => "name", // foreign key attribute that is shown to user
-             'model' => "App\Models\Category", // foreign key model
+          [ // relationship
+            'label' => "Categorie",
+            'type' => 'relationship',
+            'name' => 'categories', // the method that defines the relationship in your Model
+            //'entity' => 'categories', // the method that defines the relationship in your Model
+            //'attribute' => 'name', // foreign key attribute that is shown to user
+            //'model' => "App\Models\Category", // foreign key model
+            'ajax' => false,
+            //'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+            // 'select_all' => true, // show Select All and Clear buttons?
+            'inline_create' => [ 'entity' => 'category' ] // you need to specify the entity in singular
           ],
           [
              // run a function on the CRUD model and show its return value
@@ -247,24 +254,6 @@ class PeriodicCrudController extends CrudController
         // $this->crud->limit();
     }
 
-    public function store(StoreRequest $request)
-    {
-        // your additional operations before save here
-        $redirect_location = parent::storeCrud($request);
-        // your additional operations after save here
-        // use $this->data['entry'] or $this->crud->entry
-        return $redirect_location;
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        // your additional operations before save here
-        $redirect_location = parent::updateCrud($request);
-        // your additional operations after save here
-        // use $this->data['entry'] or $this->crud->entry
-        return $redirect_location;
-    }
-
     public function register(Request $request, $id){
         $p = \App\Models\Periodic::findOrFail($id);
         $res = $p->createExpense();
@@ -276,5 +265,10 @@ class PeriodicCrudController extends CrudController
         }
         
         return redirect(backpack_url('dashboard'));
+    }
+
+    public function fetchCategories()
+    {
+        return $this->fetch(\App\Models\Category::class);
     }
 }
