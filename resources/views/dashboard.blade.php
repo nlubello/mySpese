@@ -303,14 +303,16 @@
             </div>
 
             <div class="card-body">
-              <div class="col-md-6 col-xs-12">
-                <div id="line-yr"></div>
-              </div>
-              <div class="col-md-3 col-xs-12">
-                <div id="pie-yr-exp"></div>
-              </div>
-              <div class="col-md-3 col-xs-12">
-                <div id="pie-yr-pro"></div>
+              <div class="row">
+                <div class="col-md-6 col-xs-12">
+                  <div id="line-yr"></div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                  <div id="pie-yr-exp"></div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                  <div id="pie-yr-pro"></div>
+                </div>
               </div>
             </div>
         </div>
